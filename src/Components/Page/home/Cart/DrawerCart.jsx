@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { Button, Col, Drawer, InputNumber, Row } from "antd";
+import { Button, Col, Divider, Drawer, InputNumber, Row } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import Text from "antd/lib/typography/Text";
 import { deleteCarts, updateCarts } from "../../../../Actions";
+import { NavLink } from "react-router-dom";
 function DrawerCart(props) {
   const { drawer, setDrawer, dataAddOnCart } = props;
   const reCard = useSelector((state) => state.reCard);
@@ -14,8 +15,8 @@ function DrawerCart(props) {
     setDrawer(false);
   };
   const updateQuantity = (key, amount, e) => {
-    console.log("key", key);
-    console.log("e", e);
+    console.log("index", key);
+    console.log("value", e);
 
     dispatch(updateCarts(key, e));
   };
@@ -32,11 +33,13 @@ function DrawerCart(props) {
         ? reCard[0].key &&
           reCard.map((item, key) => (
             <Row gutter={[32, 0]} key={key} align="middle">
-              <Col xs={10} ms={10} lg={10} xl={10}>
-                <Text>{item.title}</Text> ||{item.buy.size}
+              <Col xs={10} ms={10} lg={5} xl={5}>
                 <img style={{ width: "100%" }} src={item.picture} alt="" />
               </Col>
-              <Col xs={10} ms={10} lg={10} xl={10}>
+              <Col xs={10} ms={10} lg={15} xl={15}>
+                <Text>
+                  {item.title} - {item.buy.size}
+                </Text>
                 <InputNumber
                   min={1}
                   value={item.buy.amount}
@@ -50,9 +53,13 @@ function DrawerCart(props) {
                   onClick={() => dispatch(deleteCarts(key))}
                 />
               </Col>
+              <Divider />
             </Row>
           ))
         : ""}
+      <NavLink to="/viewCart">
+        <h2 style={{ textAlign: "center" }}>VIEW IN CART</h2>
+      </NavLink>
     </Drawer>
   );
 }
