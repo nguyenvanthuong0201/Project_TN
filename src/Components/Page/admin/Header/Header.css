@@ -1,0 +1,19 @@
+span.anticon.anticon-menu-fold.trigger {
+  font-size: 30px;
+  margin-left: -36px;
+  line-height: 72px;
+}
+span.anticon.anticon-menu-unfold.trigger {
+  font-size: 30px;
+  line-height: 76px;
+  margin-left: -35px;
+}
+header.ant-layout-header.site-layout-background.Header {
+  display: flex;
+  justify-content: space-between;
+  color: aliceblue;
+}
+.Header_controller {
+  display: flex;
+  flex-wrap: wrap;
+}

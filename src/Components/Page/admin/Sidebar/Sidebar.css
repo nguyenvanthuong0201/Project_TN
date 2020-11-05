@@ -1,0 +1,13 @@
+.ant-menu-item-selected {
+  border-left: solid 5px;
+}
+
+.logo_logoIconTitle {
+  margin-top: 25px;
+  position: absolute;
+  font-weight: 600;
+  font-size: 20px;
+  top: 10px;
+  right: 30px;
+  color: currentcolor;
+}
