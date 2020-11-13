@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Layout, Menu, Breadcrumb } from "antd";
 import CptFooter from "../admin/Footer";
@@ -26,6 +26,7 @@ function Home(props) {
     }
     return result;
   };
+
   return (
     <Router>
       <Layout>

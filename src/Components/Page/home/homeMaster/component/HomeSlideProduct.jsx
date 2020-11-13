@@ -24,14 +24,18 @@ function HomeSlideProduct(props) {
   const handleCancel = () => {
     setOpenModal(false);
   };
+  console.log("dataProductNew :>> ", dataProductNew);
   return (
     <>
+      {/* Open Modal */}
       <InformationModal
         openModal={openModal}
         handleOk={handleOk}
         handleCancel={handleCancel}
         dataView={dataView}
       />
+      <h1 style={{ textAlign: "center" }}>New Arrivals</h1>
+      <hr style={{ width: "600px", margin: "auto" }} />
       <Splide
         options={{
           rewind: true,
@@ -58,6 +62,8 @@ function HomeSlideProduct(props) {
           );
         })}
       </Splide>
+      <h1 style={{ textAlign: "center" }}>Promotion</h1>
+      <hr style={{ width: "600px", margin: "auto" }} />
       <Splide
         options={{
           rewind: true,

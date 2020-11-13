@@ -10,33 +10,47 @@ import {
   InputNumber,
   Row,
   Radio,
+  notification,
 } from "antd";
 import DrawerCart from "../../Cart/DrawerCart";
 import { listCarts } from "../../../../../Actions/cartActions.js";
 import { useDispatch } from "react-redux";
+import { Link, NavLink, Redirect } from "react-router-dom";
+import Login from "../../Login";
 
 function InformationModal(props) {
   const [form] = Form.useForm();
   const [dataAddOnCart, setDataAddOnCart] = useState([]);
   const [drawer, setDrawer] = useState(false);
+  const [toPay, setToPay] = useState(false);
   const dispatch = useDispatch();
 
   let { openModal, handleOk, handleCancel, dataView } = props;
-  // console.log("dataView :>> ", dataView);
   const onFinish = (value) => {
     let body = {
       ...dataView,
       buy: value,
     };
-    // console.log(body)
     setDataAddOnCart(body);
-    setDrawer(true);
-    console.log("dispatch");
-    dispatch(listCarts(body));
+    if (toPay === false) {
+      dispatch(listCarts(body));
+      setDrawer(true);
+      notification.success({
+        message: "Add product success !!!!!",
+        placement: "bottomLeft",
+        style: { backgroundColor: "greenyellow" },
+      });
+    } else {
+      dispatch(listCarts(body));
+      setToPay(false);
+      window.location.href = "http://localhost:3000/login";
+    }
   };
-  const onClickByNow = () => {
-    // dispatch(listCarts("sss", 1));
+  const onBuyNow = () => {
+    setToPay(true);
   };
+
+  console.log(toPay, "toPay");
   return (
     <Modal
       title="Information Product"
@@ -46,11 +60,15 @@ function InformationModal(props) {
       footer={null}
       width={800}
     >
+      {/* VIEW GIỎ HÀNG */}
       <DrawerCart
         drawer={drawer}
         setDrawer={setDrawer}
         dataAddOnCart={dataAddOnCart}
       />
+      {/* ------ */}
+      {/* MODAL LOGIN */}
+      {/* ----- */}
       <Row gutter={[32, 0]}>
         <Col xs={24} md={24} lg={8} xl={8}>
           <img
@@ -76,9 +94,7 @@ function InformationModal(props) {
                 {
                   required: true,
                   type: "number",
-                  // min: 1,
-                  // max: 999,
-                  message: "Amount >= 1 !!!",
+                  message: "amount >= 1 !!!",
                 },
               ]}
             >
@@ -91,7 +107,6 @@ function InformationModal(props) {
             >
               <Radio.Group options={dataView.size} />
             </Form.Item>
-
             <Form.Item shouldUpdate={true}>
               <Fragment>
                 <Row gutter={[32, 0]}>
@@ -104,22 +119,21 @@ function InformationModal(props) {
                         height: "50px",
                         fontWeight: "bold",
                       }}
-                      htmlType="submit"
                       disabled={
                         !form.isFieldsTouched(true) ||
                         form
                           .getFieldsError()
                           .filter(({ errors }) => errors.length).length
                       }
+                      htmlType="submit"
                     >
                       ADD TO CARD
                     </Button>
                   </Col>
-
                   <Col xl={24} md={24} lg={12} xl={12}>
                     <Button
-                      onClick={onClickByNow}
                       type="ghost"
+                      onClick={onBuyNow}
                       style={{
                         backgroundColor: "#B22222",
                         width: "100%",
@@ -127,18 +141,11 @@ function InformationModal(props) {
                         fontWeight: "bold",
                       }}
                       htmlType="submit"
-                      disabled={
-                        !form.isFieldsTouched(true) ||
-                        form
-                          .getFieldsError()
-                          .filter(({ errors }) => errors.length).length
-                      }
                     >
                       BUY NOW
                     </Button>
                   </Col>
                 </Row>
-
                 {/* Form button reset */}
               </Fragment>
             </Form.Item>

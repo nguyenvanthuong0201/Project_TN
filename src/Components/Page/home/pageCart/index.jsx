@@ -11,6 +11,7 @@ import {
   Col,
   Descriptions,
   Image,
+  InputNumber,
   PageHeader,
   Popconfirm,
   Row,
@@ -31,7 +32,7 @@ function PageCart(props) {
     dispatch(deleteCarts(index));
   };
   /// tìm vị trí của index
-  var findProductInCart = (card, key) => {
+  var findProductInCart = (card, size, key) => {
     var index = -1;
     if (card.length > 0) {
       for (var i = 0; i < card.length; i++) {
@@ -43,22 +44,35 @@ function PageCart(props) {
     }
     return index;
   };
-  // / thêm bớt số lượng prooduct
-  const btnMinus = (card, key, value) => {
-    const index = findProductInCart(card, key);
-
-    if (value > 0) {
-      dispatch(updateCarts(index, value));
-      console.log("index", index);
-      console.log("value", value);
-    } else {
-      alert("Bạn định hack à ");
+  var findProductInCartSize = (card, size, key) => {
+    var index = -1;
+    if (card.length > 0) {
+      for (var i = 0; i < card.length; i++) {
+        if (card[i].key === key && card[i].buy.size === size) {
+          index = i;
+          break;
+        }
+      }
     }
+    return index;
   };
-  const btnPlus = (card, key, value) => {
-    const index = findProductInCart(card, key);
-    dispatch(updateCarts(index, value));
-  };
+  // / thêm bớt số lượng prooduct 1 san phẩm
+  // const btnMinus = (card, key, value) => {
+  //   const index = findProductInCart(card, key);
+
+  //   if (value > 0) {
+  //     dispatch(updateCarts(index, value));
+  //     console.log("index", index);
+  //     console.log("value", value);
+  //   } else {
+  //     alert("Bạn định hack à ");
+  //   }
+  // };
+  // const btnPlus = (card, key, value) => {
+  //   const index = findProductInCart(card, key);
+  //   dispatch(updateCarts(index, value));
+  // };
+
   /// tổng tiền của item trong table card
   const SumItem = (amount, sale) => {
     return (amount * sale).toLocaleString();
@@ -82,6 +96,11 @@ function PageCart(props) {
       }
     }
     return number;
+  };
+  const updateQuantity = (card, key, size, e) => {
+    console.log("size", size);
+    const index = findProductInCartSize(card, size, key);
+    dispatch(updateCarts(index, e));
   };
   const columns = [
     {
@@ -136,20 +155,12 @@ function PageCart(props) {
       width: "20%",
       render: (buy, record) => (
         <>
-          <Button
-            style={{ float: "left" }}
-            shape="round"
-            type="primary"
-            icon={<MinusCircleOutlined />}
-            onClick={() => btnMinus(reCard, record.key, buy.amount - 1)}
-          />
-          <span>{buy.amount}</span>
-          <Button
-            style={{ float: "right" }}
-            shape="round"
-            type="primary"
-            icon={<PlusCircleOutlined />}
-            onClick={() => btnPlus(reCard, record.key, buy.amount + 1)}
+          <InputNumber
+            min={1}
+            value={buy.amount}
+            onChange={(e) =>
+              updateQuantity(reCard, record.key, record.buy.size, e)
+            }
           />
         </>
       ),
@@ -222,12 +233,14 @@ function PageCart(props) {
                 </Button>
               </Col>
               <Col xs={24} md={24} lg={12} xl={12}>
-                <Button
-                  style={{ width: "100%", height: "50px" }}
-                  type="primary"
-                >
-                  CONTINUE PAYMENT
-                </Button>
+                <NavLink to="/paymentCart">
+                  <Button
+                    style={{ width: "100%", height: "50px" }}
+                    type="primary"
+                  >
+                    CONTINUE PAYMENT
+                  </Button>
+                </NavLink>
               </Col>
             </Row>
           </Card>

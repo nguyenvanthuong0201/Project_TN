@@ -36,6 +36,7 @@ function AdminProduct(props) {
   useEffect(() => {
     handleClickGetAll();
   }, []);
+
   const handleView = (record) => {
     setOpenModal(true);
     setDataView(record);

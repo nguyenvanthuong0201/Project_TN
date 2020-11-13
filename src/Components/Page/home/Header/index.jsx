@@ -1,34 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Layout, Menu, Breadcrumb, Button, Badge, Dropdown } from "antd";
 import HomeCart from "./component/HomeCart";
 import Avatar from "antd/lib/avatar/avatar";
 import { ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 import { Link, NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Login from "../Login";
+import firebase from "../../../../utils/firebase";
+import { logoutUser } from "../../../../Actions";
 
 const { Header, Content } = Layout;
 
 HeaderHome.propTypes = {};
-const menu = (
-  <Menu>
-    <Menu.Item>
-      <a target="_blank">Nguyễn Văn Thương</a>
-    </Menu.Item>
-    <Menu.Item>
-      <a target="_blank">Giỏ hàng</a>
-    </Menu.Item>
-    <Menu.Item>
-      <a target="_blank">Logout</a>
-    </Menu.Item>
-  </Menu>
-);
 
 function HeaderHome(props) {
+  const dispatch = useDispatch();
+  const userLogin = useSelector((state) => state.reLogin);
   const reCard = useSelector((state) => state.reCard);
   // / thêm số lượng cho icon cart
+
   const onNumber = (reCard) => {
-    console.log("reCard", reCard);
     let number = 0;
     if (reCard.length > 0) {
       for (let i = 0; i < reCard.length; i++) {
@@ -37,7 +29,34 @@ function HeaderHome(props) {
     }
     return number;
   };
+  const logout = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(function () {
+        dispatch(logoutUser());
+        localStorage.removeItem("UserLogin");
+      })
+      .catch(function (error) {});
+  };
+  const toPageAdmin = () => {
+    window.location.href = "http://localhost:3000/admin";
+  };
+  const menu = (
+    <Menu>
+      <Menu.Item>
+        <a target="_blank">{userLogin.displayName}</a>
+      </Menu.Item>
+      <Menu.Item>
+        <a onClick={toPageAdmin}>Page Manage</a>
+      </Menu.Item>
+      <Menu.Item>
+        <a onClick={logout}>Logout</a>
+      </Menu.Item>
+    </Menu>
+  );
 
+  console.log("userLogin456456", userLogin);
   return (
     <Header
       style={{ position: "fixed", zIndex: 999, width: "100%" }}
@@ -56,10 +75,21 @@ function HeaderHome(props) {
         <Menu.Item key="4">
           <Link to="/contact">Contact</Link>
         </Menu.Item>
+        {/* Button đăng nhập  */}
         <div style={{ float: "right" }}>
-          <Dropdown overlay={menu} placement="bottomLeft">
-            <Avatar size="large" icon={<UserOutlined />} />
-          </Dropdown>
+          {Object.keys(userLogin).length > 0 ? (
+            <Dropdown overlay={menu} placement="bottomLeft">
+              <Avatar
+                src={userLogin.photoURL}
+                size="large"
+                icon={<UserOutlined />}
+              />
+            </Dropdown>
+          ) : (
+            <NavLink to="/login">
+              <Button>Sign in</Button>
+            </NavLink>
+          )}
         </div>
         <div style={{ float: "right", marginRight: "20px" }}>
           <NavLink to="/viewCart">

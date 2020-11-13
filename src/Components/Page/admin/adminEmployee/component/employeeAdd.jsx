@@ -20,7 +20,6 @@ function EmployeeAdd(props) {
   const handleOnCloseDrawer = () => {
     setOpenDrawer(false);
   };
-
   const onFinish = async (value) => {
     // form.resetFields();
     console.log("value", value);

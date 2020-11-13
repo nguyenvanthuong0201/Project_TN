@@ -11,6 +11,8 @@ import HomeMater from "../Components/Page/home/homeMaster/HomeMater";
 import HomeProduct from "../Components/Page/home/homeProduct/HomeProduct";
 import PageCart from "../Components/Page/home/pageCart";
 import NotFound from "../Components/Page/NotFound";
+import HomePaymentCart from "../Components/Page/home/paymentCart/";
+import Login from "../Components/Page/home/Login";
 
 export const routes = [
   {
@@ -78,5 +80,27 @@ export const routerHome = [
     path: "/viewCart",
     exact: false,
     main: () => <PageCart />,
+  },
+  {
+    path: "/paymentCart",
+    exact: false,
+    main: () => <HomePaymentCart />,
+  },
+  {
+    path: "/paymentCart",
+    exact: false,
+    main: () => <HomePaymentCart />,
+  },
+  {
+    path: "/login",
+    exact: false,
+    main: () => <Login />,
+  },
+
+  {
+    // 404 phải  đặt dưới cùng
+    path: "",
+    exact: false,
+    main: () => <NotFound />,
   },
 ];

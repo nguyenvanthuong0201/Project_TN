@@ -13,3 +13,7 @@ export const format = {
   dateTimeEn: "YYYY-MM-DD HH:mm",
   dateTimesEn: "YYYY-MM-DD HH:mm:ss",
 };
+export const checkBoxPayment = [
+  { label: "Momo", value: "momo" },
+  { label: "Payment on delivery", value: "paymentOnDelivery" },
+];

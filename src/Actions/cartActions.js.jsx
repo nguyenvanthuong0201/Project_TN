@@ -11,9 +11,9 @@ const listCarts = (product, quantity) => async (dispatch) => {
 const deleteCarts = (keyProduct) => async (dispatch) => {
   dispatch({ type: CART_LIST_DELETE, keyProduct });
 };
-const updateCarts = (key, quantity) => async (dispatch) => {
+const updateCarts = (key, quantity, size) => async (dispatch) => {
   // console.log(key, quantity);
-  dispatch({ type: CART_LIST_UPDATE, key, quantity });
+  dispatch({ type: CART_LIST_UPDATE, key, quantity, size });
 };
 // const addCarts = (product,quantity)
 export { listCarts, deleteCarts, updateCarts };
