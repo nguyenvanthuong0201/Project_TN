@@ -1,11 +1,12 @@
 import { LOGIN_USER, LOGOUT_USER } from "../constant/cartConstants";
-var initialState = [];
+var data = JSON.parse(localStorage.getItem("LOGIN"));
+var initialState = data ? data : [];
 function reLogin(state = initialState, action) {
   switch (action.type) {
     case LOGIN_USER:
       console.log("action", action);
       state = action.user;
-      console.log("state", state);
+      localStorage.setItem("LOGIN", JSON.stringify(state));
       return state;
     case LOGOUT_USER:
       state = "";

@@ -59,11 +59,6 @@ const paymentCustody = (product) => async (dispatch) => {
     // dispatch({ type: PAYMENT_CUSTODY, dataResponseMoMo });
     console.log("dataResponseMoMo", dataResponseMoMo);
     window.location.href = dataResponseMoMo.data.payUrl;
-    notification.success({
-      message: "Thành công !!!!!",
-      placement: "bottomLeft",
-      style: { backgroundColor: "greenyellow" },
-    });
   } else {
     console.log("dataResponseMoMo", dataResponseMoMo);
     notification.success({

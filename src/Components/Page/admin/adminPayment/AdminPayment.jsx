@@ -32,7 +32,11 @@ function AdminPayment(props) {
         </>
       ),
     },
-
+    {
+      title: "STT",
+      dataIndex: "index",
+      width: "5%",
+    },
     {
       title: "First Name",
       dataIndex: "firstName",
@@ -213,7 +217,7 @@ function AdminPayment(props) {
               dataSource={filterTable == null ? data : filterTable}
               pagination={{ pageSize: 6 }}
               size="small"
-              rowKey="paymentId"
+              rowKey="index"
               scroll={{ x: 1200, y: 300 }}
             />
           </Col>

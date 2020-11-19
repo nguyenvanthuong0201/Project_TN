@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Login from "../Login";
 import firebase from "../../../../utils/firebase";
 import { logoutUser } from "../../../../Actions";
+import { Spin } from "antd";
 
 const { Header, Content } = Layout;
 
@@ -18,6 +19,7 @@ function HeaderHome(props) {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.reLogin);
   const reCard = useSelector((state) => state.reCard);
+  const data = JSON.parse(localStorage.getItem("LOGIN"));
   // / thêm số lượng cho icon cart
 
   const onNumber = (reCard) => {
@@ -29,15 +31,22 @@ function HeaderHome(props) {
     }
     return number;
   };
-  const logout = () => {
+
+  const firebaseLogout = () => {
     firebase
       .auth()
       .signOut()
       .then(function () {
         dispatch(logoutUser());
-        localStorage.removeItem("UserLogin");
+        dispatch({ type: "CLOSE_SPIN" });
+        localStorage.removeItem("LOGIN");
       })
       .catch(function (error) {});
+  };
+  const logout = () => {
+    dispatch({ type: "OPEN_SPIN" });
+    firebaseLogout();
+    console.log("loggg");
   };
   const toPageAdmin = () => {
     window.location.href = "http://localhost:3000/admin";
@@ -56,7 +65,7 @@ function HeaderHome(props) {
     </Menu>
   );
 
-  console.log("userLogin456456", userLogin);
+  console.log("đât", userLogin);
   return (
     <Header
       style={{ position: "fixed", zIndex: 999, width: "100%" }}
@@ -76,8 +85,9 @@ function HeaderHome(props) {
           <Link to="/contact">Contact</Link>
         </Menu.Item>
         {/* Button đăng nhập  */}
+
         <div style={{ float: "right" }}>
-          {Object.keys(userLogin).length > 0 ? (
+          {data && Object.keys(data).length > 0 ? (
             <Dropdown overlay={menu} placement="bottomLeft">
               <Avatar
                 src={userLogin.photoURL}

@@ -203,7 +203,7 @@ function PageCart(props) {
             dataSource={reCard}
             pagination={{ pageSize: 10 }}
             size="small"
-            rowKey="key"
+            rowKey="index"
           />
         </Col>
         <Col xs={24} md={24} lg={8} xl={8}>

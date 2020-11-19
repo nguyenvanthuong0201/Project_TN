@@ -35,16 +35,21 @@ function CptHeader(props) {
   const HandleClickCollapsed = () => {
     onCollapse(!collapsed);
   };
-  const logout = () => {
+  const firebaseLogout = () => {
     firebase
       .auth()
       .signOut()
       .then(function () {
         dispatch(logoutUser());
-        localStorage.removeItem("UserLogin");
+        dispatch({ type: "CLOSE_SPIN" });
+        localStorage.removeItem("LOGIN");
         window.location.href = "http://localhost:3000";
       })
       .catch(function (error) {});
+  };
+  const logout = () => {
+    dispatch({ type: "OPEN_SPIN" });
+    firebaseLogout();
     console.log("loggg");
   };
   const ToCart = () => {

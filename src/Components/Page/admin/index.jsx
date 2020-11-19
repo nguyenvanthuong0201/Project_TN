@@ -6,11 +6,14 @@ import CptSiderbar from "./Sidebar";
 import CptHeader from "./Header";
 import CptFooter from "./Footer/";
 import { routes } from "../../../routers";
+import { useSelector } from "react-redux";
 const { Content } = Layout;
 
 PageAdmin.propTypes = {};
 
 function PageAdmin(props) {
+  const userLogin = useSelector((state) => state.reLogin);
+
   const onCollapse = () => {
     setCollapsed(!collapsed);
   };
@@ -30,39 +33,46 @@ function PageAdmin(props) {
     }
     return result;
   };
+  console.log("userLoginlogin", userLogin);
+  console.log("Object.keys(userLogin)", Object.keys(userLogin).length);
+  if (Object.keys(userLogin).length > 0) {
+    return (
+      <Router>
+        <Fragment>
+          <Layout style={{ minHeight: "100vh" }}>
+            {/* Start Siderbar */}
+            <CptSiderbar collapsed={collapsed} />
+            <Layout className="site-layout">
+              <CptHeader collapsed={collapsed} onCollapse={onCollapse} />
 
-  return (
-    <Router>
-      <Fragment>
-        <Layout style={{ minHeight: "100vh" }}>
-          {/* Start Siderbar */}
-          <CptSiderbar collapsed={collapsed} />
-          <Layout className="site-layout">
-            <CptHeader collapsed={collapsed} onCollapse={onCollapse} />
+              {/* End Header */}
 
-            {/* End Header */}
-
-            {/* Start Content */}
-            <Content
-              className="site-layout-background"
-              style={{
-                margin: "24px 16px",
-                padding: 24,
-                minHeight: 280,
-              }}
-            >
-              {/* this is content nè  */}
-              <Switch>{showContent(routes)}</Switch>
-            </Content>
-            {/* End Content */}
-            {/* Start Footer */}
-            <CptFooter />
-            {/* End Footer */}
+              {/* Start Content */}
+              <Content
+                className="site-layout-background"
+                style={{
+                  margin: "24px 16px",
+                  padding: 24,
+                  minHeight: 280,
+                }}
+              >
+                {/* this is content nè  */}
+                <Switch>{showContent(routes)}</Switch>
+              </Content>
+              {/* End Content */}
+              {/* Start Footer */}
+              <CptFooter />
+              {/* End Footer */}
+            </Layout>
           </Layout>
-        </Layout>
-      </Fragment>
-    </Router>
-  );
+        </Fragment>
+      </Router>
+      // }
+    );
+  } else {
+    // window.location.href = "http://localhost:3000/";
+    console.log('window.location.href = "http://localhost:3000/";');
+  }
 }
 
 export default PageAdmin;

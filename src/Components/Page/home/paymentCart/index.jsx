@@ -25,6 +25,7 @@ import "./paymentCart.css";
 const { Panel } = Collapse;
 function HomePaymentCart(props) {
   const [checkboxOther, setCheckBoxOther] = useState(false);
+  const userLogin = useSelector((state) => state.reLogin);
   const reCard = useSelector((state) => state.reCard);
   const dispatch = useDispatch();
 
@@ -38,11 +39,9 @@ function HomePaymentCart(props) {
       // const updateStatus = "Đang xử lý";
       // dispatch(oderDetail(id, updateStatus));
       console.log("Câp nhap");
-      alert(" cập nhật");
     } else {
       console.log("Không Câp nhap");
       // dispatch(oderDetail(id));
-      alert("Không cập nhật");
     }
   }, []);
   /////
@@ -160,6 +159,7 @@ function HomePaymentCart(props) {
     },
   ];
   console.log("checkboxOther", checkboxOther);
+  console.log("userLogin12321321321", userLogin.firstName);
   return (
     <div>
       <Row>
@@ -171,221 +171,231 @@ function HomePaymentCart(props) {
               ghost={false}
               onBack={() => window.history.back()}
             />
-            <Form
-              name="basic"
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-              layout="vertical" // Form chỉnh các lable va input
-            >
-              <Row gutter={[32, 0]}>
-                {/* Thông tin firstName người mua */}
-                <Col xs={24} sm={24} lg={8} xl={8}>
-                  <Form.Item
-                    hasFeedback
-                    label="First Name"
-                    name="firstName"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your first name!",
-                      },
-                    ]}
-                  >
-                    <Input type="text" />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} sm={24} lg={8} xl={8}>
-                  <Form.Item
-                    hasFeedback
-                    label="last Name"
-                    name="lastName"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your last name!",
-                      },
-                    ]}
-                  >
-                    <Input type="text" />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} sm={24} lg={8} xl={8}>
-                  <Form.Item
-                    label="Phone "
-                    name="phone"
-                    hasFeedback
-                    rules={[
-                      {
-                        required: true,
-                        type: "number",
-                        min: 100000000,
-                        max: 999999999,
-                        message: "Please input your phone 10 number",
-                      },
-                    ]}
-                  >
-                    <InputNumber style={{ width: "100%" }} />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} sm={24} lg={12} xl={12}>
-                  <Form.Item
-                    label="Email"
-                    name="email"
-                    hasFeedback
-                    rules={[
-                      { required: true, message: "Please input your Email!" },
-                    ]}
-                  >
-                    <Input type="email" />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} sm={24} lg={12} xl={12}>
-                  <Form.Item
-                    label="Address"
-                    name="address"
-                    hasFeedback
-                    rules={[
-                      { required: true, message: "Please input your address!" },
-                    ]}
-                  >
-                    <Input />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} sm={24} lg={24} xl={24}>
-                  <Collapse onChange={callback}>
-                    <Panel
-                      header={
-                        <Form.Item>
-                          <Checkbox checked={checkboxOther}>
-                            Other recipient information
-                          </Checkbox>
-                        </Form.Item>
-                      }
-                      key="1"
+            {userLogin && (
+              <Form
+                name="basic"
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                layout="vertical" // Form chỉnh các lable va input
+              >
+                <Row gutter={[32, 0]}>
+                  {/* Thông tin firstName người mua */}
+                  <Col xs={24} sm={24} lg={8} xl={8}>
+                    <Form.Item
+                      hasFeedback
+                      label="First Name"
+                      name="firstName"
+                      initialValue={userLogin.firstName}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your first name!",
+                        },
+                      ]}
                     >
-                      <Row gutter={[32, 0]}>
-                        <Col xs={24} sm={24} lg={8} xl={8}>
-                          <Form.Item
-                            hasFeedback
-                            label="First Name"
-                            name="firstNameOther"
-                          >
-                            <Input type="text" />
-                          </Form.Item>
-                        </Col>
-                        <Col xs={24} sm={24} lg={8} xl={8}>
-                          <Form.Item
-                            hasFeedback
-                            label="last Name"
-                            name="lastNameOther"
-                          >
-                            <Input type="text" />
-                          </Form.Item>
-                        </Col>
-                        <Col xs={24} sm={24} lg={8} xl={8}>
-                          <Form.Item
-                            label="Phone "
-                            name="phoneOther"
-                            hasFeedback
-                          >
-                            <InputNumber style={{ width: "100%" }} />
-                          </Form.Item>
-                        </Col>
-                        <Col xs={24} sm={24} lg={12} xl={12}>
-                          <Form.Item
-                            label="Email"
-                            name="emailOther"
-                            hasFeedback
-                          >
-                            <Input type="email" />
-                          </Form.Item>
-                        </Col>
-                        <Col xs={24} sm={24} lg={12} xl={12}>
-                          <Form.Item
-                            label="Address"
-                            name="addressOther"
-                            hasFeedback
-                          >
-                            <Input type="text" />
-                          </Form.Item>
-                        </Col>
-                      </Row>
-                    </Panel>
-                  </Collapse>
-                </Col>
-
-                <Col xs={24} sm={24} lg={24} xl={24}>
-                  <Table
-                    columns={columns}
-                    dataSource={reCard}
-                    pagination={false}
-                    size="small"
-                    rowKey="key"
-                  />
-                </Col>
-                <Col xs={24} sm={24} lg={24} xl={24}>
-                  <Descriptions
-                    bordered
-                    column={{ xxl: 2, xl: 2, lg: 2, md: 2, sm: 2, xs: 1 }}
-                  >
-                    <Descriptions.Item label="Provisional">
-                      {reCard ? SumTotal(reCard) : ""} ₫
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Transport fee">
-                      {reCard ? "35,000 ₫" : ""}
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Total">
-                      {/* don't edit */}
-                      <span id="paymentSubTotal" style={{ display: "none" }}>
-                        {reCard ? SumTotalShip(reCard) : ""}
-                      </span>
-                      <span>
-                        {reCard ? SumTotalShip(reCard).toLocaleString() : ""}
-                      </span>{" "}
-                      ₫{/* don't edit */}
-                    </Descriptions.Item>
-                  </Descriptions>
-                </Col>
-                <Col
-                  xs={24}
-                  sm={24}
-                  lg={16}
-                  xl={16}
-                  style={{ marginTop: "25px" }}
-                >
-                  <Col xs={24} sm={24} lg={24} xl={24}>
-                    <Form.Item name="note" label="Note">
-                      <Input.TextArea type="text" />
+                      <Input type="text" />
                     </Form.Item>
                   </Col>
-                </Col>
-                <Col xs={24} sm={24} lg={8} xl={8}>
-                  <Form.Item
-                    name="typePayment"
-                    initialValue="momo"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please check your payment!!!",
-                      },
-                    ]}
-                  >
-                    <Radio.Group options={checkBoxPayment} />
-                  </Form.Item>
-                  <Form.Item shouldUpdate={true}>
-                    <Button
-                      type="primary"
-                      danger
-                      disabled={reCard.length > 0 ? false : true}
-                      htmlType="submit"
-                      style={{ width: "100%", height: "50px" }}
+                  <Col xs={24} sm={24} lg={8} xl={8}>
+                    <Form.Item
+                      hasFeedback
+                      label="Last Name"
+                      name="lastName"
+                      initialValue={userLogin.lastName}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your last name!",
+                        },
+                      ]}
                     >
-                      PAYMENT
-                    </Button>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Form>
+                      <Input type="text" />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} sm={24} lg={8} xl={8}>
+                    <Form.Item
+                      label="Phone "
+                      name="phone"
+                      initialValue={userLogin.phone}
+                      hasFeedback
+                      rules={[
+                        {
+                          required: true,
+                          type: "number",
+                          min: 100000000,
+                          max: 999999999,
+                          message: "Please input your phone 10 number",
+                        },
+                      ]}
+                    >
+                      <InputNumber style={{ width: "100%" }} />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} sm={24} lg={12} xl={12}>
+                    <Form.Item
+                      label="Email"
+                      name="email"
+                      initialValue={userLogin.email}
+                      hasFeedback
+                      rules={[
+                        { required: true, message: "Please input your Email!" },
+                      ]}
+                    >
+                      <Input type="email" />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} sm={24} lg={12} xl={12}>
+                    <Form.Item
+                      label="Address"
+                      name="address"
+                      initialValue={userLogin.address}
+                      hasFeedback
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your address!",
+                        },
+                      ]}
+                    >
+                      <Input />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} sm={24} lg={24} xl={24}>
+                    <Collapse onChange={callback}>
+                      <Panel
+                        header={
+                          <Form.Item>
+                            <Checkbox checked={checkboxOther}>
+                              Other recipient information
+                            </Checkbox>
+                          </Form.Item>
+                        }
+                        key="1"
+                      >
+                        <Row gutter={[32, 0]}>
+                          <Col xs={24} sm={24} lg={8} xl={8}>
+                            <Form.Item
+                              hasFeedback
+                              label="First Name"
+                              name="firstNameOther"
+                            >
+                              <Input type="text" />
+                            </Form.Item>
+                          </Col>
+                          <Col xs={24} sm={24} lg={8} xl={8}>
+                            <Form.Item
+                              hasFeedback
+                              label="last Name"
+                              name="lastNameOther"
+                            >
+                              <Input type="text" />
+                            </Form.Item>
+                          </Col>
+                          <Col xs={24} sm={24} lg={8} xl={8}>
+                            <Form.Item
+                              label="Phone "
+                              name="phoneOther"
+                              hasFeedback
+                            >
+                              <InputNumber style={{ width: "100%" }} />
+                            </Form.Item>
+                          </Col>
+                          <Col xs={24} sm={24} lg={12} xl={12}>
+                            <Form.Item
+                              label="Email"
+                              name="emailOther"
+                              hasFeedback
+                            >
+                              <Input type="email" />
+                            </Form.Item>
+                          </Col>
+                          <Col xs={24} sm={24} lg={12} xl={12}>
+                            <Form.Item
+                              label="Address"
+                              name="addressOther"
+                              hasFeedback
+                            >
+                              <Input type="text" />
+                            </Form.Item>
+                          </Col>
+                        </Row>
+                      </Panel>
+                    </Collapse>
+                  </Col>
+
+                  <Col xs={24} sm={24} lg={24} xl={24}>
+                    <Table
+                      columns={columns}
+                      dataSource={reCard}
+                      pagination={false}
+                      size="small"
+                      rowKey="key"
+                    />
+                  </Col>
+                  <Col xs={24} sm={24} lg={24} xl={24}>
+                    <Descriptions
+                      bordered
+                      column={{ xxl: 2, xl: 2, lg: 2, md: 2, sm: 2, xs: 1 }}
+                    >
+                      <Descriptions.Item label="Provisional">
+                        {reCard ? SumTotal(reCard) : ""} ₫
+                      </Descriptions.Item>
+                      <Descriptions.Item label="Transport fee">
+                        {reCard ? "35,000 ₫" : ""}
+                      </Descriptions.Item>
+                      <Descriptions.Item label="Total">
+                        {/* don't edit */}
+                        <span id="paymentSubTotal" style={{ display: "none" }}>
+                          {reCard ? SumTotalShip(reCard) : ""}
+                        </span>
+                        <span>
+                          {reCard ? SumTotalShip(reCard).toLocaleString() : ""}
+                        </span>{" "}
+                        ₫{/* don't edit */}
+                      </Descriptions.Item>
+                    </Descriptions>
+                  </Col>
+                  <Col
+                    xs={24}
+                    sm={24}
+                    lg={16}
+                    xl={16}
+                    style={{ marginTop: "25px" }}
+                  >
+                    <Col xs={24} sm={24} lg={24} xl={24}>
+                      <Form.Item name="note" label="Note">
+                        <Input.TextArea type="text" />
+                      </Form.Item>
+                    </Col>
+                  </Col>
+                  <Col xs={24} sm={24} lg={8} xl={8}>
+                    <Form.Item
+                      name="typePayment"
+                      initialValue="momo"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please check your payment!!!",
+                        },
+                      ]}
+                    >
+                      <Radio.Group options={checkBoxPayment} />
+                    </Form.Item>
+                    <Form.Item shouldUpdate={true}>
+                      <Button
+                        type="primary"
+                        danger
+                        disabled={reCard.length > 0 ? false : true}
+                        htmlType="submit"
+                        style={{ width: "100%", height: "50px" }}
+                      >
+                        PAYMENT
+                      </Button>
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Form>
+            )}
           </Card>
         </Col>
       </Row>

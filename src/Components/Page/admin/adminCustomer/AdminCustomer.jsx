@@ -198,7 +198,7 @@ function AdminCustomer(props) {
                   pagination={{ pageSize: 10 }}
                   size="small"
                   scroll={{ x: 1500, y: 350 }}
-                  rowKey="createDay"
+                  rowKey="createDate"
                   style={{ marginTop: "10px" }}
                 />
               </Col>

@@ -1,4 +1,4 @@
-import { ConfigProvider, Layout, Menu } from "antd";
+import { ConfigProvider, Layout, Menu, Spin } from "antd";
 import "antd/dist/antd.css";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +24,9 @@ function App() {
   const [dataFirebaseEmployee, setDataFireBaseEmployee] = useState([]);
   const [dataFirebaseCustomer, setDataFireBaseCustomer] = useState([]);
   const [userLogin, setUserLogin] = useState("");
+  const countLoadingContainer = useSelector(
+    (state) => state.reSpin.countLoadingContainer
+  );
   const handleClickGetEmployee = () => {
     let tutorialsRef = firebase.firestore().collection("/employee");
     tutorialsRef.onSnapshot((querySnapshot) => {
@@ -96,6 +99,7 @@ function App() {
       .onAuthStateChanged(async (user) => {
         if (!user) {
           console.log("User is not logged in");
+          dispatch(logoutUser());
         } else {
           setUserLogin(user);
           // dispatch(loginUser(user));
@@ -113,9 +117,24 @@ function App() {
   let dataCustomer1 = dataFirebaseCustomer.filter(ArrayCustomer);
   const dataEmployee = dataEmployee1[0];
   const dataCustomer = dataCustomer1[0];
-  const targeEmployee = Object.assign({}, dataEmployee, userLogin);
-  const targeCustomer = Object.assign({}, dataCustomer, userLogin);
-  const targeNoUser = Object.assign({}, userLogin);
+  const targeEmployee = Object.assign({}, dataEmployee, {
+    email: userLogin.email,
+    displayName: userLogin.displayName,
+    photoURL: userLogin.photoURL,
+  });
+  const targeCustomer = Object.assign({}, dataCustomer, {
+    email: userLogin.email,
+    displayName: userLogin.displayName,
+    photoURL: userLogin.photoURL,
+  });
+  const targeNoUser = Object.assign(
+    {},
+    {
+      email: userLogin.email,
+      displayName: userLogin.displayName,
+      photoURL: userLogin.photoURL,
+    }
+  );
   console.log("dataCustomer :>> ", dataCustomer);
   console.log("dataEmployee :>> ", dataEmployee);
   console.log("targeEmployee :>> ", targeEmployee);
@@ -131,18 +150,22 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route path="/admin">
-          <PageAdmin />
-        </Route>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/paymentCart">
-          <HomePaymentCart />
-        </Route>
+        <Spin
+          spinning={countLoadingContainer}
+          style={{ position: "fixed", maxHeight: "100vh" }}
+          size="large"
+        >
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/admin">
+            <PageAdmin />
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          {/* <Redirect to="/" /> */}
+        </Spin>
       </Switch>
     </BrowserRouter>
   );

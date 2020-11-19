@@ -34,7 +34,7 @@ const expandedRowRender = (row) => {
       sale: 200020,
     },
     {
-      productID: 1,
+      productID: 2,
       title: "thời trang ",
       amount: 5,
       sale: 200020,
