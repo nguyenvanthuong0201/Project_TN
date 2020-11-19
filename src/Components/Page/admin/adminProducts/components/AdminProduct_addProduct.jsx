@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import PropTypes from "prop-types";
 import {
   Form,
@@ -19,6 +19,7 @@ import firebase from "../../../../../utils/firebase";
 
 function AddProduct(props) {
   const { drawer, setDrawer } = props;
+  const [salePromotion, setSalePromotion] = useState(true);
   const [form] = Form.useForm();
 
   const handleOnCloseDrawer = () => {
@@ -26,6 +27,9 @@ function AddProduct(props) {
   };
 
   const onFinish = async (value) => {
+    if (value.sale === undefined) {
+      value.sale = 0;
+    }
     const body = {
       ...value,
       key: "",
@@ -46,6 +50,8 @@ function AddProduct(props) {
             size: body.size,
             sale: body.sale,
             cost: body.cost,
+            buy: body.buy,
+            status: body.status,
             amount: body.amount,
             option: body.option,
             picture: url,
@@ -76,10 +82,17 @@ function AddProduct(props) {
     }
     return e && e.fileList;
   };
-  const onChange = (e) => {
-    let dot = e.target.v;
-  };
+  // const onChange = (e) => {
+  //   let dot = e.target.v;
+  // };
 
+  const handleChange = (value) => {
+    if (value === "Promotion") {
+      setSalePromotion(false);
+    } else {
+      setSalePromotion(true);
+    }
+  };
   return (
     <div>
       <Drawer
@@ -102,6 +115,7 @@ function AddProduct(props) {
             label="Picture"
             valuePropName="fileList"
             getValueFromEvent={normFile}
+            rules={[{ required: true, message: "Please input your picture!" }]}
           >
             <Upload
               name="logo"
@@ -136,12 +150,13 @@ function AddProduct(props) {
             name="option"
             rules={[{ required: true, message: "Please input your Option!" }]}
           >
-            <Select>
+            <Select onChange={handleChange}>
               <Select.Option value="New">New</Select.Option>
               <Select.Option value="Promotion">Promotion</Select.Option>
               <Select.Option value="Other">Other</Select.Option>
             </Select>
           </Form.Item>
+
           <Form.Item
             hasFeedback
             label="Amount "
@@ -150,14 +165,7 @@ function AddProduct(props) {
           >
             <InputNumber style={{ width: "100%" }} />
           </Form.Item>
-          <Form.Item
-            hasFeedback
-            label="Sale "
-            name="sale"
-            rules={[{ type: "number", min: 0, max: 999999999999999 }]}
-          >
-            <InputNumber suffix="₫" style={{ width: "100%" }} />
-          </Form.Item>
+
           <Form.Item
             hasFeedback
             label="Cost"
@@ -166,31 +174,53 @@ function AddProduct(props) {
           >
             <InputNumber suffix="₫" style={{ width: "100%" }} />
           </Form.Item>
+          <Form.Item
+            hasFeedback
+            label="Buy"
+            name="buy"
+            rules={[{ type: "number", min: 0, max: 999999999999999 }]}
+          >
+            <InputNumber suffix="₫" style={{ width: "100%" }} />
+          </Form.Item>
+          {salePromotion === false ? (
+            <Form.Item
+              hasFeedback
+              label="Sale "
+              name="sale"
+              rules={[{ type: "number", min: 0, max: 999999999999999 }]}
+            >
+              <InputNumber suffix="₫" style={{ width: "100%" }} />
+            </Form.Item>
+          ) : (
+            ""
+          )}
+          <Form.Item
+            hasFeedback
+            label="Status"
+            name="status"
+            rules={[{ required: true, message: "Please input your Show!" }]}
+          >
+            <Select>
+              <Select.Option value="Hide">Hide</Select.Option>
+              <Select.Option value="Show">Show</Select.Option>
+            </Select>
+          </Form.Item>
+
           <Form.Item label="Size" name="size">
             <Checkbox.Group options={sizeAdminProduct} />
           </Form.Item>
           <Divider />
 
           <Form.Item shouldUpdate={true}>
-            {() => (
-              <Fragment>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  disabled={
-                    !form.isFieldsTouched(true) ||
-                    form.getFieldsError().filter(({ errors }) => errors.length)
-                      .length
-                  }
-                >
-                  Add
-                </Button>
-                {/* Form button reset */}
-                <Button htmlType="reset" onClick={() => form.resetFields()}>
-                  reset
-                </Button>
-              </Fragment>
-            )}
+            <Fragment>
+              <Button type="primary" htmlType="submit">
+                Add
+              </Button>
+              {/* Form button reset */}
+              <Button htmlType="reset" onClick={() => form.resetFields()}>
+                reset
+              </Button>
+            </Fragment>
           </Form.Item>
         </Form>
       </Drawer>

@@ -1,0 +1,13 @@
+.pageCart_continueBuying:hover{
+    background-color: #40A9FF;
+    color: white;
+}
+.pageCart_title{
+    text-align: center;
+}
+.pageCart_titleHeader{
+    text-align: center;
+    font-size: 24px;
+    text-transform: uppercase;
+    font-weight: 600;
+}

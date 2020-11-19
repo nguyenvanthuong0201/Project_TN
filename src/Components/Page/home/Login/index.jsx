@@ -2,6 +2,8 @@ import Modal from "antd/lib/modal/Modal";
 import React from "react";
 import firebase from "firebase";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+import { Card, Col, Row } from "antd";
+import "./login.css";
 
 function Login(props) {
   const { handleOk, handleCancel, openLogin } = props;
@@ -17,25 +19,20 @@ function Login(props) {
   };
   console.log("uiConfig", uiConfig);
   return (
-    // <Modal
-    //   title="LOGIN FORM"
-    //   visible={openLogin}
-    //   onOk={handleOk}
-    //   onCancel={handleCancel}
-    //   footer={null}
-    //   width={400}
-    // >
-    //   <p>Please sign-in:</p>
-    // </Modal>
-    <div>
-      <h1>Login</h1>
-      <div>
-        <StyledFirebaseAuth
-          uiConfig={uiConfig}
-          firebaseAuth={firebase.auth()}
-        />
-      </div>
-    </div>
+    <Row>
+      <Col span={8} offset={8}>
+        <Card>
+          <h1 className="Login_title">LOGIN</h1>
+          <hr />
+          <div>
+            <StyledFirebaseAuth
+              uiConfig={uiConfig}
+              firebaseAuth={firebase.auth()}
+            />
+          </div>
+        </Card>
+      </Col>
+    </Row>
   );
 }
 

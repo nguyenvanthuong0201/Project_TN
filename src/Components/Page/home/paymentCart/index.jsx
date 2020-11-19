@@ -18,6 +18,7 @@ import {
 import Text from "antd/lib/typography/Text";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Redirect, useHistory } from "react-router-dom";
 import { deleteCarts, paymentCustody } from "../../../../Actions";
 import { checkBoxPayment } from "../../../../data/dataAdminProduct";
 import "./paymentCart.css";
@@ -28,22 +29,22 @@ function HomePaymentCart(props) {
   const userLogin = useSelector((state) => state.reLogin);
   const reCard = useSelector((state) => state.reCard);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   //// Set Thanh toán
   const string = window.location.href;
-  console.log("object", string);
   const substring = "message=Success";
 
-  useEffect(() => {
-    if (string.includes(substring)) {
-      // const updateStatus = "Đang xử lý";
-      // dispatch(oderDetail(id, updateStatus));
-      console.log("Câp nhap");
-    } else {
-      console.log("Không Câp nhap");
-      // dispatch(oderDetail(id));
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (string.includes(substring)) {
+  //     // const updateStatus = "Đang xử lý";
+  //     // dispatch(oderDetail(id, updateStatus));
+  //     console.log("Câp nhap");
+  //   } else {
+  //     console.log("Không Câp nhap");
+  //     // dispatch(oderDetail(id));
+  //   }
+  // }, []);
   /////
   const onFinishFailed = (onFinishFailed) => {
     console.log("onFinishFailed", onFinishFailed);
@@ -56,14 +57,17 @@ function HomePaymentCart(props) {
       paymentSubTotal: document.getElementById("paymentSubTotal").innerHTML,
       status: "Tạm giữ",
     };
-    console.log("value :>> ", value);
-    dispatch(paymentCustody(value));
+    if (value.typePayment === "momo") {
+      dispatch(paymentCustody(value));
+    } else {
+      history.push("/");
+    }
   };
   const handleDelete = (card, key) => {
     const index = findProductInCart(card, key);
     dispatch(deleteCarts(index));
   };
-  var findProductInCart = (card, size, key) => {
+  var findProductInCart = (card, key) => {
     var index = -1;
     if (card.length > 0) {
       for (var i = 0; i < card.length; i++) {
@@ -78,19 +82,45 @@ function HomePaymentCart(props) {
   const callback = () => {
     setCheckBoxOther(!checkboxOther);
   };
-  const SumItem = (amount, sale) => {
-    return (amount * sale).toLocaleString();
+  const SumItem = (amount, record) => {
+    if (record.option === "Promotion") {
+      return (amount * record.sale).toLocaleString();
+    } else {
+      return (amount * record.buy).toLocaleString();
+    }
+  };
+  const ArrayProductSale = (value) => {
+    if (value.option === "Promotion") {
+      return value;
+    }
+  };
+  const ArrayProductBuy = (value) => {
+    if (value.option !== "Promotion") {
+      return value;
+    }
   };
   /// tổng tiền cả giỏ hàng
-  const SumTotal = (card) => {
-    let total = 0;
-    if (card.length > 0) {
-      for (let i = 0; i < card.length; i++) {
-        total += card[i].buy.amount * card[i].sale;
+  const SumTotalPromotion = (card) => {
+    let sale = card.filter(ArrayProductSale);
+    let totalPromotion = 0;
+    if (sale.length > 0) {
+      for (let i = 0; i < sale.length; i++) {
+        totalPromotion += sale[i].buyCart.amount * sale[i].sale;
       }
     }
-    return total.toLocaleString();
+    return totalPromotion;
   };
+  const SumTotalOther = (card) => {
+    let buy = card.filter(ArrayProductBuy);
+    let totalOther = 0;
+    if (buy.length > 0) {
+      for (let i = 0; i < buy.length; i++) {
+        totalOther += buy[i].buyCart.amount * buy[i].buy;
+      }
+    }
+    return totalOther;
+  };
+
   const SumTotalShip = (card) => {
     let total = 35000;
     if (card.length > 0) {
@@ -128,21 +158,21 @@ function HomePaymentCart(props) {
     },
     {
       title: "Amount",
-      dataIndex: "buy",
+      dataIndex: "buyCart",
       align: "center",
       width: "20%",
-      render: (buy, record) => (
+      render: (buyCart, record) => (
         <>
-          <Text>{buy.amount}</Text>
+          <Text>{buyCart.amount}</Text>
         </>
       ),
     },
     {
       title: "Size",
-      dataIndex: "buy",
+      dataIndex: "buyCart",
       align: "center",
       width: "10%",
-      render: (buy) => <>{buy.size}</>,
+      render: (buyCart) => <>{buyCart.size}</>,
     },
     {
       title: "Total",
@@ -152,7 +182,7 @@ function HomePaymentCart(props) {
       render: (sale, record) => (
         <>
           <b style={{ color: "red" }}>
-            {SumItem(record.buy.amount, record.sale)} ₫
+            {SumItem(record.buyCart.amount, record)} ₫
           </b>
         </>
       ),
@@ -338,7 +368,12 @@ function HomePaymentCart(props) {
                       column={{ xxl: 2, xl: 2, lg: 2, md: 2, sm: 2, xs: 1 }}
                     >
                       <Descriptions.Item label="Provisional">
-                        {reCard ? SumTotal(reCard) : ""} ₫
+                        {reCard
+                          ? (
+                              SumTotalPromotion(reCard) + SumTotalOther(reCard)
+                            ).toLocaleString()
+                          : ""}{" "}
+                        ₫
                       </Descriptions.Item>
                       <Descriptions.Item label="Transport fee">
                         {reCard ? "35,000 ₫" : ""}
@@ -346,10 +381,20 @@ function HomePaymentCart(props) {
                       <Descriptions.Item label="Total">
                         {/* don't edit */}
                         <span id="paymentSubTotal" style={{ display: "none" }}>
-                          {reCard ? SumTotalShip(reCard) : ""}
+                          {reCard
+                            ? 35000 +
+                              SumTotalPromotion(reCard) +
+                              SumTotalOther(reCard)
+                            : ""}
                         </span>
                         <span>
-                          {reCard ? SumTotalShip(reCard).toLocaleString() : ""}
+                          {reCard
+                            ? (
+                                35000 +
+                                SumTotalPromotion(reCard) +
+                                SumTotalOther(reCard)
+                              ).toLocaleString()
+                            : ""}
                         </span>{" "}
                         ₫{/* don't edit */}
                       </Descriptions.Item>

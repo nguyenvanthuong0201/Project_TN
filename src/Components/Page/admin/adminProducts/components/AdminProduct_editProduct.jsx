@@ -11,6 +11,7 @@ import {
   Divider,
   message,
   notification,
+  InputNumber,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { sizeAdminProduct } from "../../../../../data/dataAdminProduct";
@@ -18,13 +19,24 @@ import firebase from "../../../../../utils/firebase";
 
 function EditProduct(props) {
   const { drawerEdit, setDrawerEdit, bodyEdit } = props;
+  const [salePromotion, setSalePromotion] = useState(true);
 
   const [form] = Form.useForm();
   const handleOnCloseDrawer = () => {
     setDrawerEdit(false);
   };
+  const handleChange = (value) => {
+    if (value === "Promotion") {
+      setSalePromotion(false);
+    } else {
+      setSalePromotion(true);
+    }
+  };
   console.log("bodyEdit", bodyEdit);
   const onFinish = async (value) => {
+    if (value.sale === undefined) {
+      value.sale = 0;
+    }
     const body = {
       ...value,
     };
@@ -43,6 +55,8 @@ function EditProduct(props) {
           size: body.size,
           sale: body.sale,
           cost: body.cost,
+          buy: body.buy,
+          status: body.status,
           amount: body.amount,
           option: body.option,
           picture: bodyEdit.picture,
@@ -70,7 +84,9 @@ function EditProduct(props) {
             title: body.title,
             type: body.type,
             size: body.size,
+            status: body.status,
             sale: body.sale,
+            buy: body.buy,
             cost: body.cost,
             amount: body.amount,
             option: body.option,
@@ -157,10 +173,9 @@ function EditProduct(props) {
             hasFeedback
             label="Option"
             name="option"
-            initialValue={bodyEdit.option}
             rules={[{ required: true, message: "Please input your Option!" }]}
           >
-            <Select>
+            <Select onChange={handleChange}>
               <Select.Option value="New">New</Select.Option>
               <Select.Option value="Promotion">Promotion</Select.Option>
               <Select.Option value="Other">Other</Select.Option>
@@ -177,15 +192,6 @@ function EditProduct(props) {
           </Form.Item>
           <Form.Item
             hasFeedback
-            label="Sale "
-            name="sale"
-            initialValue={bodyEdit.sale}
-            rules={[{ required: true, message: "Please input your sale !" }]}
-          >
-            <Input type="number" suffix="₫" s />
-          </Form.Item>
-          <Form.Item
-            hasFeedback
             label="Cost"
             name="cost"
             initialValue={bodyEdit.cost}
@@ -193,6 +199,41 @@ function EditProduct(props) {
           >
             <Input type="number" suffix="₫" />
           </Form.Item>
+          <Form.Item
+            hasFeedback
+            label="Buy"
+            name="buy"
+            initialValue={bodyEdit.buy}
+            rules={[{ required: true, message: "Please input your buy!" }]}
+          >
+            <Input type="number" suffix="₫" />
+          </Form.Item>
+          {salePromotion === false ? (
+            <Form.Item
+              hasFeedback
+              label="Sale"
+              name="sale"
+              initialValue={bodyEdit.sale}
+              rules={[{ required: true, message: "Please input your sale !" }]}
+            >
+              <InputNumber style={{ width: "100%" }} />
+            </Form.Item>
+          ) : (
+            ""
+          )}
+          <Form.Item
+            hasFeedback
+            initialValue={bodyEdit.status}
+            label="Status"
+            name="status"
+            rules={[{ required: true, message: "Please input your Show!" }]}
+          >
+            <Select>
+              <Select.Option value="Hide">Hide</Select.Option>
+              <Select.Option value="Show">Show</Select.Option>
+            </Select>
+          </Form.Item>
+
           <Form.Item label="Size" name="size" initialValue={bodyEdit.size}>
             <Checkbox.Group options={sizeAdminProduct} />
           </Form.Item>

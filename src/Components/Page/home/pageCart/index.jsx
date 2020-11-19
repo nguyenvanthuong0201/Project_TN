@@ -22,6 +22,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { deleteCarts, updateCarts } from "../../../../Actions";
+import "./pageCart.css";
 
 function PageCart(props) {
   const reCard = useSelector((state) => state.reCard);
@@ -32,10 +33,10 @@ function PageCart(props) {
     dispatch(deleteCarts(index));
   };
   /// tìm vị trí của index
-  var findProductInCart = (card, size, key) => {
-    var index = -1;
+  let findProductInCart = (card, key) => {
+    let index = -1;
     if (card.length > 0) {
-      for (var i = 0; i < card.length; i++) {
+      for (let i = 0; i < card.length; i++) {
         if (card[i].key === key) {
           index = i;
           break;
@@ -48,7 +49,7 @@ function PageCart(props) {
     var index = -1;
     if (card.length > 0) {
       for (var i = 0; i < card.length; i++) {
-        if (card[i].key === key && card[i].buy.size === size) {
+        if (card[i].key === key && card[i].buyCart.size === size) {
           index = i;
           break;
         }
@@ -74,25 +75,49 @@ function PageCart(props) {
   // };
 
   /// tổng tiền của item trong table card
-  const SumItem = (amount, sale) => {
-    return (amount * sale).toLocaleString();
+  const SumItem = (amount, record) => {
+    if (record.option === "Promotion") {
+      return (amount * record.sale).toLocaleString();
+    } else {
+      return (amount * record.buy).toLocaleString();
+    }
   };
-  /// tổng tiền cả giỏ hàng
-  const SumTotal = (card) => {
-    let total = 0;
-    if (card.length > 0) {
-      for (let i = 0; i < card.length; i++) {
-        total += card[i].buy.amount * card[i].sale;
+  const ArrayProductSale = (value) => {
+    if (value.option === "Promotion") {
+      return value;
+    }
+  };
+  const ArrayProductBuy = (value) => {
+    if (value.option !== "Promotion") {
+      return value;
+    }
+  };
+  const SumTotalPromotion = (card) => {
+    let sale = card.filter(ArrayProductSale);
+    let totalPromotion = 0;
+    if (sale.length > 0) {
+      for (let i = 0; i < sale.length; i++) {
+        totalPromotion += sale[i].buyCart.amount * sale[i].sale;
       }
     }
-    return total.toLocaleString();
+    return totalPromotion;
+  };
+  const SumTotalOther = (card) => {
+    let buy = card.filter(ArrayProductBuy);
+    let totalOther = 0;
+    if (buy.length > 0) {
+      for (let i = 0; i < buy.length; i++) {
+        totalOther += buy[i].buyCart.amount * buy[i].buy;
+      }
+    }
+    return totalOther;
   };
   /// tổng số lượng sản phẩm
   const sumAmount = (card) => {
     let number = 0;
     if (card.length > 0) {
       for (let i = 0; i < card.length; i++) {
-        number += card[i].buy.amount;
+        number += card[i].buyCart.amount;
       }
     }
     return number;
@@ -146,20 +171,28 @@ function PageCart(props) {
       width: "20%",
       defaultSortOrder: "descend",
       sorter: (a, b) => a.sale - b.sale,
-      render: (sale) => <b style={{ color: "red" }}>{sale.toLocaleString()}</b>,
+      render: (sale, record) => (
+        <b style={{ color: "red" }}>
+          {(record.option === "Promotion"
+            ? record.sale
+            : record.buy
+          ).toLocaleString()}
+          ₫
+        </b>
+      ),
     },
     {
       title: "Amount",
-      dataIndex: "buy",
+      dataIndex: "buyCart",
       align: "center",
       width: "20%",
-      render: (buy, record) => (
+      render: (buyCart, record) => (
         <>
           <InputNumber
             min={1}
-            value={buy.amount}
+            value={buyCart.amount}
             onChange={(e) =>
-              updateQuantity(reCard, record.key, record.buy.size, e)
+              updateQuantity(reCard, record.key, record.buyCart.size, e)
             }
           />
         </>
@@ -167,21 +200,20 @@ function PageCart(props) {
     },
     {
       title: "Size",
-      dataIndex: "buy",
+      dataIndex: "buyCart",
       align: "center",
       width: "10%",
-      render: (buy) => <>{buy.size}</>,
+      render: (buyCart) => <>{buyCart.size}</>,
     },
     {
       title: "Total",
       dataIndex: "sale",
       align: "center",
       width: "20%",
-
       render: (sale, record) => (
         <>
           <b style={{ color: "red" }}>
-            {SumItem(record.buy.amount, record.sale)} ₫
+            {SumItem(record.buyCart.amount, record)} ₫
           </b>
         </>
       ),
@@ -189,13 +221,14 @@ function PageCart(props) {
   ];
 
   return (
-    <>
+    <div>
       <PageHeader
         className="site-page-header"
-        title="View Cart"
         ghost={false}
         onBack={() => window.history.back()}
-      />
+      >
+        <h1 className="pageCart_titleHeader">View Cart</h1>
+      </PageHeader>
       <Row>
         <Col xs={24} md={24} lg={16} xl={16}>
           <Table
@@ -207,13 +240,19 @@ function PageCart(props) {
           />
         </Col>
         <Col xs={24} md={24} lg={8} xl={8}>
-          <Card title="Total Card">
+          <Card>
+            <h3 className="pageCart_title">TOTAL CART</h3>
             <Descriptions
               bordered
               column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
             >
               <Descriptions.Item label="Total Money">
-                <h1 style={{ color: "red" }}>{SumTotal(reCard)} ₫</h1>
+                <h1 style={{ color: "red" }}>
+                  {(
+                    SumTotalPromotion(reCard) + SumTotalOther(reCard)
+                  ).toLocaleString()}{" "}
+                  ₫
+                </h1>
               </Descriptions.Item>
               <Descriptions.Item label="Amount">
                 <h3>{sumAmount(reCard)}</h3>
@@ -222,12 +261,12 @@ function PageCart(props) {
             <Row gutter={[32, 0]} style={{ marginTop: "20px" }}>
               <Col xs={24} md={24} lg={12} xl={12}>
                 <Button
+                  className="pageCart_continueBuying"
                   style={{
                     width: "100%",
                     height: "50px",
-                    backgroundColor: "greenyellow",
                   }}
-                  type="dashed"
+                  type="ghost"
                 >
                   <NavLink to="/">CONTINUE BUYING</NavLink>
                 </Button>
@@ -246,7 +285,7 @@ function PageCart(props) {
           </Card>
         </Col>
       </Row>
-    </>
+    </div>
   );
 }
 

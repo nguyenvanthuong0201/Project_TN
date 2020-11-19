@@ -1,6 +1,6 @@
-import React, { Component } from "react";
 import { Upload, message } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import React, { Component } from "react";
 
 function getBase64(img, callback) {
   const reader = new FileReader();
@@ -20,10 +20,11 @@ function beforeUpload(file) {
   return isJpgOrPng && isLt2M;
 }
 
-class AvatarAdd extends Component {
+class AvatarProfile extends React.Component {
   state = {
     loading: false,
   };
+
   handleChange = (info) => {
     if (info.file.status === "uploading") {
       this.setState({ loading: true });
@@ -39,14 +40,11 @@ class AvatarAdd extends Component {
       );
     }
   };
+
   render() {
+    const { userLogin } = this.props;
     const { loading, imageUrl } = this.state;
-    const uploadButton = (
-      <div>
-        {loading ? <LoadingOutlined /> : <PlusOutlined />}
-        <div style={{ marginTop: 8 }}>Upload</div>
-      </div>
-    );
+
     return (
       <Upload
         name="avatar"
@@ -60,11 +58,15 @@ class AvatarAdd extends Component {
         {imageUrl ? (
           <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
         ) : (
-          uploadButton
+          <img
+            src={userLogin ? userLogin.photoURL : ""}
+            alt="avatar"
+            style={{ width: "100%" }}
+          />
         )}
       </Upload>
     );
   }
 }
 
-export default AvatarAdd;
+export default AvatarProfile;

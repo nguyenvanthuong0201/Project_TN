@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Button, Card, Col, Input, Popconfirm, Row } from "antd";
 import { Table } from "antd";
 import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import { motion } from "framer-motion";
+import { pageAnimate, pageTransitionX } from "../../../../data/transition";
 
 function AdminPayment(props) {
   const [filterTable, setFilterTable] = useState(null);
@@ -72,7 +74,6 @@ function AdminPayment(props) {
       sorter: (a, b) => a.price - b.price,
     },
   ];
-
   const data = [
     {
       paymentId: "ABC8",
@@ -172,7 +173,6 @@ function AdminPayment(props) {
     //   .doc(id)
     //   .delete()
     //   .then(() => {
-    //     console.log("Document successfully deleted!");
     //     notification.success({
     //       message: "Delete success !!!!!",
     //       placement: "bottomLeft",
@@ -182,7 +182,6 @@ function AdminPayment(props) {
     //   .catch((error) => {
     //     console.error("Error removing document: ", error);
     //   });
-    console.log("id :>> ", id);
   };
   const handleView = (record) => {
     console.log("record :>> ", record);
@@ -198,7 +197,13 @@ function AdminPayment(props) {
   };
 
   return (
-    <div>
+    <motion.div
+      initial="initial"
+      exit="out"
+      animate="in"
+      variants={pageTransitionX}
+      transition={pageAnimate}
+    >
       <Card style={{ borderRadius: "10px" }} size="small">
         <Row>
           <Col xs={24} md={24} lg={10}>
@@ -215,15 +220,14 @@ function AdminPayment(props) {
             <Table
               columns={columns}
               dataSource={filterTable == null ? data : filterTable}
-              pagination={{ pageSize: 6 }}
+              pagination={{ pageSize: 10 }}
               size="small"
               rowKey="index"
-              scroll={{ x: 1200, y: 300 }}
             />
           </Col>
         </Row>
       </Card>
-    </div>
+    </motion.div>
   );
 }
 

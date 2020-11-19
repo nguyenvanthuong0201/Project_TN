@@ -14,23 +14,26 @@ import {
 } from "antd";
 import DrawerCart from "../../Cart/DrawerCart";
 import { listCarts } from "../../../../../Actions/cartActions.js";
-import { useDispatch } from "react-redux";
-import { Link, NavLink, Redirect } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, NavLink, Redirect, useHistory } from "react-router-dom";
 import Login from "../../Login";
 
 function InformationModal(props) {
   const [form] = Form.useForm();
   const [dataAddOnCart, setDataAddOnCart] = useState([]);
+  const UserLogin = useSelector((state) => state.reLogin);
   const [drawer, setDrawer] = useState(false);
   const [toPay, setToPay] = useState(false);
   const dispatch = useDispatch();
 
   let { openModal, handleOk, handleCancel, dataView } = props;
+  const history = useHistory();
   const onFinish = (value) => {
     let body = {
       ...dataView,
-      buy: value,
+      buyCart: value,
     };
+    console.log("body :>> ", body);
     setDataAddOnCart(body);
     if (toPay === false) {
       dispatch(listCarts(body));
@@ -43,14 +46,18 @@ function InformationModal(props) {
     } else {
       dispatch(listCarts(body));
       setToPay(false);
-      window.location.href = "http://localhost:3000/login";
+      if (UserLogin && Object.keys(UserLogin).length > 0) {
+        history.push("/paymentCart");
+      } else {
+        history.push("/login");
+      }
     }
   };
   const onBuyNow = () => {
     setToPay(true);
   };
 
-  console.log(toPay, "toPay");
+  console.log(dataView, "dataView");
   return (
     <Modal
       title="Information Product"
@@ -80,7 +87,12 @@ function InformationModal(props) {
         <Col xs={24} md={24} lg={16} xl={16}>
           <h2>{dataView.title}</h2>
           {console.log("dataView.sale", typeof dataView.sale)}
-          <h3>{Number(dataView.sale).toLocaleString()} ₫</h3>
+          <h3>
+            {dataView.option === "Promotion"
+              ? Number(dataView.sale).toLocaleString()
+              : Number(dataView.buy).toLocaleString()}{" "}
+            ₫
+          </h3>
           <Form
             name="basic"
             onFinish={onFinish}

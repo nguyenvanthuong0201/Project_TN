@@ -20,12 +20,18 @@ import CptCustomer_information from "./component/CptCustomer_information";
 import CptCustomer_drawerAdd from "./component/CptCustomer_drawerAdd";
 import firebase from "../../../../utils/firebase";
 import { format } from "../../../../data/dataAdminProduct";
+import { motion } from "framer-motion";
+import {
+  pageAnimate,
+  pageStyle,
+  pageTransitionX,
+} from "../../../../data/transition";
+
 const moment = require("moment");
 
 function AdminCustomer(props) {
   const [drawer, setDrawer] = useState(false);
   const [dataFireBase, setDataFireBase] = useState([]);
-  console.log("bool", drawer);
   const [filterTable, setFilterTable] = useState(null);
   const [dataView, setDataView] = useState("");
 
@@ -109,7 +115,6 @@ function AdminCustomer(props) {
       .doc(id)
       .delete()
       .then(() => {
-        console.log("Document successfully deleted!");
         notification.success({
           message: "Delete success !!!!!",
           placement: "bottomLeft",
@@ -162,7 +167,13 @@ function AdminCustomer(props) {
   };
 
   return (
-    <div>
+    <motion.div
+      initial="initial"
+      exit="out"
+      animate="in"
+      variants={pageTransitionX}
+      transition={pageAnimate}
+    >
       {/* <PageHeader title="Customer" ghost={false} /> */}
       <Card style={{ borderRadius: "10px" }} size="small">
         <Row>
@@ -209,7 +220,7 @@ function AdminCustomer(props) {
           </Col>
         </Row>
       </Card>
-    </div>
+    </motion.div>
   );
 }
 

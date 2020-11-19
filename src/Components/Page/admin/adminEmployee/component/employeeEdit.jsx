@@ -27,7 +27,6 @@ function EmployeeEdit(props) {
     };
 
     const id = "Employee_" + Date.now();
-    console.log(typeof value.picture, "type");
     const storageRef = firebase.storage().ref("images-employee").child(id);
     if (typeof body.picture === "undefined") {
       const updateRef = firebase
@@ -59,10 +58,7 @@ function EmployeeEdit(props) {
         });
     } else {
       await storageRef.put(body.picture[0].originFileObj);
-      console.log("Pic", body.picture[0].originFileObj);
       storageRef.getDownloadURL().then((url) => {
-        console.log("Hêllo 12222");
-        console.log("Hêllo 4343", body.picture[0].originFileObj);
         const updateRef = firebase
           .firestore()
           .collection("employee")
@@ -99,7 +95,6 @@ function EmployeeEdit(props) {
   };
 
   const normFile = (e) => {
-    console.log("Upload event:", e);
     if (Array.isArray(e)) {
       return e;
     }

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import "./Homeintroduce.css";
+import { motion } from "framer-motion";
+
 class HomeIntroduce extends Component {
   render() {
     return (

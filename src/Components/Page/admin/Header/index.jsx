@@ -21,6 +21,7 @@ import firebase from "../../../../utils/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../../../Actions";
 import { Redirect } from "react-router-dom";
+import { PATH } from "../../../../constant/pathContants";
 moment.locale("en");
 
 const { Option } = Select;
@@ -43,7 +44,7 @@ function CptHeader(props) {
         dispatch(logoutUser());
         dispatch({ type: "CLOSE_SPIN" });
         localStorage.removeItem("LOGIN");
-        window.location.href = "http://localhost:3000";
+        window.location.href = PATH.MASTER;
       })
       .catch(function (error) {});
   };
@@ -53,7 +54,7 @@ function CptHeader(props) {
     console.log("loggg");
   };
   const ToCart = () => {
-    window.location.href = "http://localhost:3000";
+    window.location.href = PATH.MASTER;
   };
   const menu = (
     <Menu>
@@ -61,10 +62,10 @@ function CptHeader(props) {
         <a target="_blank">{userLogin.displayName}</a>
       </Menu.Item>
       <Menu.Item>
-        <a onClick={ToCart}>Home</a>
+        <a onClick={ToCart}>HOME</a>
       </Menu.Item>
       <Menu.Item>
-        <div onClick={logout}>Logout</div>
+        <div onClick={logout}>LOGOUT</div>
       </Menu.Item>
     </Menu>
   );

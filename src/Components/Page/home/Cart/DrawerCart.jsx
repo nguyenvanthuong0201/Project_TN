@@ -38,13 +38,13 @@ function DrawerCart(props) {
             </Col>
             <Col xs={10} ms={10} lg={15} xl={15}>
               <Text>
-                {item.title} - {item.buy.size}
+                {item.title} - {item.buyCart.size}
               </Text>
               <br />
               <InputNumber
                 min={1}
-                value={item.buy.amount}
-                onChange={(e) => updateQuantity(key, item.buy.amount, e)}
+                value={item.buyCart.amount}
+                onChange={(e) => updateQuantity(key, item.buyCart.amount, e)}
               />
             </Col>
             <Col xs={4} ms={4} lg={4} xl={4}>

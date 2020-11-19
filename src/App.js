@@ -1,21 +1,12 @@
-import { ConfigProvider, Layout, Menu, Spin } from "antd";
+import { Spin } from "antd";
 import "antd/dist/antd.css";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  BrowserRouter,
-  BrowserRouter as Router,
-  Link,
-  Redirect,
-  Switch,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { loginUser, logoutUser } from "./Actions";
 import "./App.css";
 import PageAdmin from "./Components/Page/admin";
 import Home from "./Components/Page/home";
-import Login from "./Components/Page/home/Login";
-import HomePaymentCart from "./Components/Page/home/paymentCart";
 import firebase from "./utils/firebase";
 
 function App() {
@@ -135,10 +126,6 @@ function App() {
       photoURL: userLogin.photoURL,
     }
   );
-  console.log("dataCustomer :>> ", dataCustomer);
-  console.log("dataEmployee :>> ", dataEmployee);
-  console.log("targeEmployee :>> ", targeEmployee);
-  console.log("targeCustomer :>> ", targeCustomer);
 
   if (dataEmployee !== undefined) {
     dispatch(loginUser(targeEmployee));
@@ -147,6 +134,7 @@ function App() {
   } else {
     dispatch(loginUser(targeNoUser));
   }
+
   return (
     <BrowserRouter>
       <Switch>
@@ -161,8 +149,23 @@ function App() {
           <Route path="/admin">
             <PageAdmin />
           </Route>
+          <Route path="/admin/employee">
+            <PageAdmin />
+          </Route>
+          <Route path="/user">
+            <PageAdmin />
+          </Route>
           <Route path="/login">
-            <Login />
+            <Home />
+          </Route>
+          <Route path="/viewCart">
+            <Home />
+          </Route>
+          <Route path="/product">
+            <Home />
+          </Route>
+          <Route path="/paymentCart">
+            <Home />
           </Route>
           {/* <Redirect to="/" /> */}
         </Spin>

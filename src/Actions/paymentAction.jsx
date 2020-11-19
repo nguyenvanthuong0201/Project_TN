@@ -3,11 +3,11 @@ import CryptoJS from "crypto-js";
 import HmacSHA256 from "crypto-js/hmac-sha256";
 import axios from "axios";
 import { notification } from "antd";
-const paymentCustody = (product) => async (dispatch) => {
-  console.log("productaaa", product);
 
+const paymentCustody = (product) => async (dispatch) => {
   var requestId = Date.now();
   var subtotalCartProduct = product.paymentSubTotal;
+  //// sửa địa chỉ thanh toán
   var returnUrlOrder = "http://localhost:3000/paymentCart";
   const secretkey = "9JHO4c3lgPjkgibhAtM8wV8tvlxPAzp0";
   var datatest =
@@ -55,12 +55,9 @@ const paymentCustody = (product) => async (dispatch) => {
     //     dataResponseMoMo,
     //     dataResponsePaymentCart,
     //   });
-    //   console.log();
     // dispatch({ type: PAYMENT_CUSTODY, dataResponseMoMo });
-    console.log("dataResponseMoMo", dataResponseMoMo);
     window.location.href = dataResponseMoMo.data.payUrl;
   } else {
-    console.log("dataResponseMoMo", dataResponseMoMo);
     notification.success({
       message: "Thất bại !!!!!",
       placement: "bottomLeft",

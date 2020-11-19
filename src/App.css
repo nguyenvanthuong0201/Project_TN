@@ -27,6 +27,13 @@
 .App-link {
   color: #61dafb;
 }
+.switch-wrapper {
+  position: relative;
+}
+
+.switch-wrapper > div {
+  position: absolute;
+}
 
 @keyframes App-logo-spin {
   from {

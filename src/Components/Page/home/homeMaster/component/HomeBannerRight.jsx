@@ -18,7 +18,7 @@ class HomeBannerRight extends Component {
 
   render() {
     return (
-      <>
+      <div>
         <Row gutter={[32, 0]}>
           <Col xs={24} md={24} lg={24} xl={24}>
             <img src={Banner1} alt="Banner1" style={this.contentStyle} />
@@ -33,7 +33,7 @@ class HomeBannerRight extends Component {
             />
           </Col>
         </Row>
-      </>
+      </div>
     );
   }
 }

@@ -3,13 +3,22 @@ import PropTypes from "prop-types";
 import { Layout, Menu, Breadcrumb, Button, Badge, Dropdown } from "antd";
 import HomeCart from "./component/HomeCart";
 import Avatar from "antd/lib/avatar/avatar";
-import { ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  CodeFilled,
+  ContactsFilled,
+  HomeFilled,
+  ShoppingCartOutlined,
+  SkinFilled,
+  UserOutlined,
+} from "@ant-design/icons";
 import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Login from "../Login";
 import firebase from "../../../../utils/firebase";
 import { logoutUser } from "../../../../Actions";
 import { Spin } from "antd";
+import "./header.css";
+import { PATH } from "../../../../constant/pathContants";
 
 const { Header, Content } = Layout;
 
@@ -26,7 +35,7 @@ function HeaderHome(props) {
     let number = 0;
     if (reCard.length > 0) {
       for (let i = 0; i < reCard.length; i++) {
-        number += reCard[i].buy.amount;
+        number += reCard[i].buyCart.amount;
       }
     }
     return number;
@@ -48,8 +57,17 @@ function HeaderHome(props) {
     firebaseLogout();
     console.log("loggg");
   };
+  console.log("userLogin12 :>> ", userLogin);
   const toPageAdmin = () => {
-    window.location.href = "http://localhost:3000/admin";
+    if (userLogin) {
+      if (userLogin.position === "admin") {
+        return (window.location.href = PATH.ADMIN);
+      } else if (userLogin.position === "employee") {
+        return (window.location.href = PATH.ADMIN_EMPLOYEE);
+      } else {
+        return (window.location.href = PATH.USER);
+      }
+    }
   };
   const menu = (
     <Menu>
@@ -65,27 +83,25 @@ function HeaderHome(props) {
     </Menu>
   );
 
-  console.log("đât", userLogin);
   return (
     <Header
       style={{ position: "fixed", zIndex: 999, width: "100%" }}
-      collapsible={true}
+      collapsible
     >
+      <div className="header-logo"></div>
       <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]}>
-        <Menu.Item key="1">
+        <Menu.Item icon={<HomeFilled />} key="1">
           <Link to="/">Home</Link>
         </Menu.Item>
-        <Menu.Item key="2">
+        <Menu.Item icon={<SkinFilled />} key="2">
           <Link to="/product">Product</Link>
         </Menu.Item>
-        <Menu.Item key="3">
+        <Menu.Item icon={<CodeFilled />} key="3">
           <Link to="/introduce">Introduce</Link>
         </Menu.Item>
-        <Menu.Item key="4">
+        <Menu.Item icon={<ContactsFilled />} key="4">
           <Link to="/contact">Contact</Link>
         </Menu.Item>
-        {/* Button đăng nhập  */}
-
         <div style={{ float: "right" }}>
           {data && Object.keys(data).length > 0 ? (
             <Dropdown overlay={menu} placement="bottomLeft">
@@ -97,14 +113,22 @@ function HeaderHome(props) {
             </Dropdown>
           ) : (
             <NavLink to="/login">
-              <Button>Sign in</Button>
+              <Avatar
+                style={{ background: "#1890FF" }}
+                size="large"
+                icon={<UserOutlined />}
+              />
             </NavLink>
           )}
         </div>
         <div style={{ float: "right", marginRight: "20px" }}>
           <NavLink to="/viewCart">
             <Badge count={onNumber(reCard)}>
-              <Avatar shape="square" icon={<ShoppingCartOutlined />} />
+              <Avatar
+                style={{ background: "#1890FF" }}
+                shape="square"
+                icon={<ShoppingCartOutlined />}
+              />
             </Badge>
           </NavLink>
         </div>

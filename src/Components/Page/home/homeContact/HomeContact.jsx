@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { motion } from "framer-motion";
 
 class HomeContact extends Component {
   render() {

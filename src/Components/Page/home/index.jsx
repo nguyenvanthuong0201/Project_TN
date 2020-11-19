@@ -7,9 +7,13 @@ import { ContainerOutlined, MenuOutlined } from "@ant-design/icons";
 import HeaderHome from "./Header";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { routerHome } from "../../../routers";
+import "./home.css";
+import HomeMater from "./homeMaster/HomeMater";
+import HomeProduct from "./homeProduct/HomeProduct";
+import HomeIntroduce from "./homeIntroduce/HomeIntroduce";
+// import moduleName from 'framer-motion'
 
 const { Header, Content } = Layout;
-Home.propTypes = {};
 
 function Home(props) {
   /// Router trang
@@ -39,7 +43,13 @@ function Home(props) {
             className="site-layout-background"
             style={{ padding: 24, minHeight: 380 }}
           >
-            <Switch>{showContent(routerHome)}</Switch>
+            <Switch
+              atEnter={{ opacity: 0, y: "-100%" }}
+              atLeave={{ opacity: 0, y: "-100%" }}
+              atActive={{ opacity: 1, y: 0 }}
+            >
+              {showContent(routerHome)}
+            </Switch>
           </div>
         </Content>
         <CptFooter />

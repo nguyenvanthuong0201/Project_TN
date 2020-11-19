@@ -13,13 +13,24 @@ import PageCart from "../Components/Page/home/pageCart";
 import NotFound from "../Components/Page/NotFound";
 import HomePaymentCart from "../Components/Page/home/paymentCart/";
 import Login from "../Components/Page/home/Login";
-
+import AdminUser from "../Components/Page/user";
 export const routes = [
   {
     /// điều chỉnh
     path: "/admin",
     exact: true,
     main: () => <AdminStatistic />,
+  },
+  {
+    /// điều chỉnh
+    path: "/user",
+    exact: true,
+    main: () => <AdminUser />,
+  },
+  {
+    path: "/admin/employee",
+    exact: false,
+    main: () => <AdminEmployee />,
   },
   {
     path: "/admin/customer",
@@ -41,11 +52,6 @@ export const routes = [
     path: "/admin/payment",
     exact: false,
     main: () => <AdminPayment />,
-  },
-  {
-    path: "/admin/employee",
-    exact: false,
-    main: () => <AdminEmployee />,
   },
 
   {

@@ -25,9 +25,10 @@ function HomeSlideProduct(props) {
     setOpenModal(false);
   };
   console.log("dataProductNew :>> ", dataProductNew);
+  console.log("dataProductPromotion :>> ", dataProductPromotion);
   return (
-    <>
-      {/* Open Modal */}
+    <div>
+      Open Modal
       <InformationModal
         openModal={openModal}
         handleOk={handleOk}
@@ -39,7 +40,7 @@ function HomeSlideProduct(props) {
       <Splide
         options={{
           rewind: true,
-          perPage: 4,
+          perPage: 5,
           perMove: 1,
           gap: "1rem",
         }}
@@ -55,7 +56,7 @@ function HomeSlideProduct(props) {
                 cover={<img alt="example" src={data.picture} />}
               >
                 <h3 style={{ textAlign: "center", color: "red" }}>
-                  {data.sale.toLocaleString()} ₫
+                  {data.buy.toLocaleString()} ₫
                 </h3>
               </Card>
             </SplideSlide>
@@ -67,7 +68,7 @@ function HomeSlideProduct(props) {
       <Splide
         options={{
           rewind: true,
-          perPage: 4,
+          perPage: 5,
           perMove: 1,
           gap: "1rem",
         }}
@@ -82,15 +83,21 @@ function HomeSlideProduct(props) {
                 style={{ width: 240 }}
                 cover={<img alt="example" src={data.picture} />}
               >
-                <h3 style={{ textAlign: "center", color: "red" }}>
-                  {data.sale.toLocaleString()} ₫
+                <h3>
+                  <span style={{ color: "gray" }}>
+                    {data.buy.toLocaleString()} ₫
+                  </span>
+                  &rarr;
+                  <span style={{ color: "red" }}>
+                    {data.sale.toLocaleString()} ₫
+                  </span>
                 </h3>
               </Card>
             </SplideSlide>
           );
         })}
       </Splide>
-    </>
+    </div>
   );
 }
 

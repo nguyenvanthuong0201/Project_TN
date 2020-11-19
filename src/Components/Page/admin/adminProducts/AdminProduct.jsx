@@ -22,6 +22,9 @@ import EditProduct from "./components/AdminProduct_editProduct";
 import firebase from "../../../../utils/firebase";
 import AdminProduct_ViewModal from "./components/AdminProduct_ViewModal";
 import { format } from "../../../../data/dataAdminProduct";
+import { motion } from "framer-motion";
+import { pageAnimate, pageTransitionX } from "../../../../data/transition";
+
 const moment = require("moment");
 
 function AdminProduct(props) {
@@ -47,11 +50,13 @@ function AdminProduct(props) {
   const handleCancel = () => {
     setOpenModal(false);
   };
+
   const columns = [
     {
       title: "Action",
       dataIndex: "action",
       width: "10%",
+      fixed: "left",
       render: (text, record) => (
         <>
           <Button
@@ -80,19 +85,19 @@ function AdminProduct(props) {
     {
       title: "Title",
       dataIndex: "title",
-      width: "20%",
+      width: "18%",
     },
     {
       title: "Amount",
       dataIndex: "amount",
-      width: "10%",
+      width: "5%",
       defaultSortOrder: "descend",
       sorter: (a, b) => a.amount - b.amount,
     },
     {
       title: "Type",
       dataIndex: "type",
-      width: "10%",
+      width: "5%",
       filters: [
         {
           text: "Shirt",
@@ -114,7 +119,7 @@ function AdminProduct(props) {
     {
       title: "Option",
       dataIndex: "option",
-      width: "10%",
+      width: "7%",
       filters: [
         {
           text: "New",
@@ -146,14 +151,50 @@ function AdminProduct(props) {
       ),
     },
     {
-      title: "Size",
-      dataIndex: "size",
-      width: "10%",
-      sorter: (a, b) => a.size.length - b.size.length,
-      sortDirections: ["descend", "ascend"],
+      title: "Status",
+      dataIndex: "status",
+      width: "5%",
+      filters: [
+        {
+          text: "Show",
+          value: "Show",
+        },
+        {
+          text: "Hide",
+          value: "Hide",
+        },
+      ],
+      filterMultiple: false,
+      onFilter: (value, record) => record.status.indexOf(value) === 0,
+      render: (status) => (
+        <>
+          <Tag
+            color={
+              (status === "Hide" && "#E2E2E2") ||
+              (status === "Show" && "#1890FF")
+            }
+          >
+            {status}
+          </Tag>
+        </>
+      ),
     },
     {
-      title: "Price",
+      title: "Size",
+      dataIndex: "size",
+      width: "8%",
+      sorter: (a, b) => a.size.length - b.size.length,
+      sortDirections: ["descend", "ascend"],
+      render: (size) => (
+        <>
+          {size.map((size, index) => {
+            return <span key={index}>{size}|</span>;
+          })}
+        </>
+      ),
+    },
+    {
+      title: "Cost",
       dataIndex: "cost",
       width: "10%",
       defaultSortOrder: "descend",
@@ -161,6 +202,18 @@ function AdminProduct(props) {
       render: (cost) => (
         <>
           <b style={{ color: "red" }}>{parseInt(cost).toLocaleString()} ₫</b>
+        </>
+      ),
+    },
+    {
+      title: "Buy",
+      width: "10%",
+      dataIndex: "buy",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.sale - b.sale,
+      render: (sale) => (
+        <>
+          <b style={{ color: "red" }}>{parseInt(sale).toLocaleString()} ₫ </b>
         </>
       ),
     },
@@ -224,7 +277,9 @@ function AdminProduct(props) {
           size,
           sale,
           cost,
+          buy,
           amount,
+          status,
           option,
           picture,
           createDate,
@@ -234,7 +289,9 @@ function AdminProduct(props) {
           title,
           type,
           size,
+          buy,
           cost,
+          status,
           amount,
           picture,
           option,
@@ -257,7 +314,13 @@ function AdminProduct(props) {
   };
 
   return (
-    <div>
+    <motion.div
+      initial="initial"
+      exit="out"
+      animate="in"
+      variants={pageTransitionX}
+      transition={pageAnimate}
+    >
       <Card style={{ borderRadius: "10px" }} size="small">
         <Row style={{ display: "flex", justifyContent: "space-between" }}>
           <div>
@@ -305,12 +368,12 @@ function AdminProduct(props) {
               pagination={{ pageSize: 10 }}
               size="small"
               rowKey="createDate"
-              scroll={{ x: 1200 }}
+              scroll={{ x: 1500 }}
             />
           </Col>
         </Row>
       </Card>
-    </div>
+    </motion.div>
   );
 }
 

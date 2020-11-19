@@ -23,7 +23,6 @@ function CptCustomer_drawerAdd(props) {
 
   const onFinish = async (value) => {
     // form.resetFields();
-    console.log("value", value);
     const body = {
       ...value,
       key: "",
@@ -34,7 +33,6 @@ function CptCustomer_drawerAdd(props) {
     if (body.key === "") {
       await storageRef.put(body.picture[0].originFileObj);
       storageRef.getDownloadURL().then((url) => {
-        console.log("url", url);
         tutorialsRef
           .add({
             createDay: Date.now(),
@@ -61,12 +59,9 @@ function CptCustomer_drawerAdd(props) {
     }
   };
 
-  const onFinishFailed = (onFinishFailed) => {
-    console.log("onFinishFailed", onFinishFailed);
-  };
+  const onFinishFailed = (onFinishFailed) => {};
 
   const normFile = (e) => {
-    console.log("Upload event:", e);
     if (Array.isArray(e)) {
       return e;
     }

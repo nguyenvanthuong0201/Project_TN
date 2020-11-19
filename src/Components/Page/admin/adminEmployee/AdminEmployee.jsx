@@ -22,6 +22,8 @@ import EmployeeAdd from "./component/employeeAdd";
 import firebase from "../../../../utils/firebase";
 import { format } from "../../../../data/dataAdminProduct";
 import EmployeeEdit from "./component/employeeEdit";
+import { pageAnimate, pageTransitionX } from "../../../../data/transition";
+import { motion } from "framer-motion";
 
 const moment = require("moment");
 
@@ -224,7 +226,13 @@ function AdminEmployee(props) {
   };
 
   return (
-    <div>
+    <motion.div
+      initial="initial"
+      exit="out"
+      animate="in"
+      variants={pageTransitionX}
+      transition={pageAnimate}
+    >
       <Card style={{ borderRadius: "10px" }} size="small">
         <Row>
           <Col xs={24} md={24} lg={10}>
@@ -269,7 +277,7 @@ function AdminEmployee(props) {
           </Col>
         </Row>
       </Card>
-    </div>
+    </motion.div>
   );
 }
 

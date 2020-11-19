@@ -1,19 +1,25 @@
 import React, { Fragment, useState } from "react";
 import PropTypes from "prop-types";
 import { Layout, PageHeader } from "antd";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import CptSiderbar from "./Sidebar";
 import CptHeader from "./Header";
 import CptFooter from "./Footer/";
 import { routes } from "../../../routers";
 import { useSelector } from "react-redux";
+import { AnimatePresence } from "framer-motion";
+
 const { Content } = Layout;
 
 PageAdmin.propTypes = {};
 
 function PageAdmin(props) {
   const userLogin = useSelector((state) => state.reLogin);
-
   const onCollapse = () => {
     setCollapsed(!collapsed);
   };
@@ -33,8 +39,6 @@ function PageAdmin(props) {
     }
     return result;
   };
-  console.log("userLoginlogin", userLogin);
-  console.log("Object.keys(userLogin)", Object.keys(userLogin).length);
   if (Object.keys(userLogin).length > 0) {
     return (
       <Router>
@@ -54,10 +58,13 @@ function PageAdmin(props) {
                   margin: "24px 16px",
                   padding: 24,
                   minHeight: 280,
+                  position: "relative",
                 }}
               >
                 {/* this is content nè  */}
-                <Switch>{showContent(routes)}</Switch>
+                <AnimatePresence>
+                  <Switch>{showContent(routes)}</Switch>
+                </AnimatePresence>
               </Content>
               {/* End Content */}
               {/* Start Footer */}
@@ -69,9 +76,6 @@ function PageAdmin(props) {
       </Router>
       // }
     );
-  } else {
-    // window.location.href = "http://localhost:3000/";
-    console.log('window.location.href = "http://localhost:3000/";');
   }
 }
 

@@ -6,6 +6,8 @@ import HomeCarousel from "./component/HomeCarousel";
 import HomeSlideProduct from "./component/HomeSlideProduct";
 import "./homeMaster.css";
 import firebase from "../../../../utils/firebase";
+import { motion } from "framer-motion";
+import { pageTransitionY } from "../../../../data/transition";
 
 function HomeMater(props) {
   const [dataFireBase, setDataFireBase] = useState([]);
@@ -20,6 +22,8 @@ function HomeMater(props) {
           size,
           sale,
           cost,
+          buy,
+          status,
           amount,
           option,
           picture,
@@ -30,6 +34,8 @@ function HomeMater(props) {
           title,
           type,
           size,
+          buy,
+          status,
           cost,
           amount,
           picture,
@@ -46,37 +52,41 @@ function HomeMater(props) {
   }, []);
   // start lấy dữ liệu product new
   const ArrayProductNew = (value) => {
-    if (value.option === "New") {
+    if (value.option === "New" && value.status === "Show") {
       return value;
     }
   };
   const ArrayProductPromotion = (value) => {
-    if (value.option === "Promotion") {
+    if (value.option === "Promotion" && value.status === "Show") {
       return value;
     }
   };
   let dataProductNew = dataFireBase.filter(ArrayProductNew);
   let dataProductPromotion = dataFireBase.filter(ArrayProductPromotion);
-
-  // End lấy dữ liệu product new
+  // End lấy dữ liệu product new0
   return (
-    <Card style={{ borderRadius: "10px" }} size="small">
-      <Row gutter={[32, 0]}>
-        <Col xs={24} md={24} lg={16} xl={16}>
-          <HomeCarousel />
-        </Col>
-        <Col xs={24} md={24} lg={8} xl={8}>
-          <HomeBannerRight />
-        </Col>
-      </Row>
-      <HomeBannerBottom />
-      {/* Start Slide */}
-      <HomeSlideProduct
-        dataProductNew={dataProductNew}
-        dataProductPromotion={dataProductPromotion}
-      />
-      {/* End slide */}
-    </Card>
+    <motion.div
+      initial="out"
+      exit="out"
+      animate="in"
+      variants={pageTransitionY}
+    >
+      <Card style={{ borderRadius: "10px" }} size="small">
+        <Row gutter={[32, 0]}>
+          <Col xs={24} md={24} lg={16} xl={16}>
+            <HomeCarousel />
+          </Col>
+          <Col xs={24} md={24} lg={8} xl={8}>
+            <HomeBannerRight />
+          </Col>
+        </Row>
+        <HomeBannerBottom />
+        <HomeSlideProduct
+          dataProductNew={dataProductNew}
+          dataProductPromotion={dataProductPromotion}
+        />
+      </Card>
+    </motion.div>
   );
 }
 
