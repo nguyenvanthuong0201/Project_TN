@@ -26,8 +26,9 @@ import "./pageCart.css";
 
 function PageCart(props) {
   const reCard = useSelector((state) => state.reCard);
+  const reLogin = useSelector((state) => state.reLogin);
   const dispatch = useDispatch();
-
+  console.log("reLogin1111 :>> ", reLogin);
   const handleDelete = (card, key) => {
     const index = findProductInCart(card, key);
     dispatch(deleteCarts(index));
@@ -82,6 +83,7 @@ function PageCart(props) {
       return (amount * record.buy).toLocaleString();
     }
   };
+
   const ArrayProductSale = (value) => {
     if (value.option === "Promotion") {
       return value;
@@ -152,6 +154,7 @@ function PageCart(props) {
       dataIndex: "index",
       align: "center",
       width: "5%",
+      render: (text, record, index) => index + 1,
     },
     {
       title: "Picture",
@@ -272,7 +275,13 @@ function PageCart(props) {
                 </Button>
               </Col>
               <Col xs={24} md={24} lg={12} xl={12}>
-                <NavLink to="/paymentCart">
+                <NavLink
+                  to={
+                    reLogin.displayName === undefined
+                      ? "/login"
+                      : "/paymentCart"
+                  }
+                >
                   <Button
                     style={{ width: "100%", height: "50px" }}
                     type="primary"

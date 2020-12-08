@@ -68,6 +68,12 @@ function AdminCustomer(props) {
       ),
     },
     {
+      title: "STT",
+      dataIndex: "index",
+      width: "5%",
+      render: (text, record, index) => index + 1,
+    },
+    {
       title: "First Name",
       dataIndex: "firstName",
       width: "10%",

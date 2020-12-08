@@ -1,13 +1,39 @@
-import React, { useState } from "react";
-import { Button, Card, Col, Input, Popconfirm, Row } from "antd";
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  Card,
+  Col,
+  Input,
+  notification,
+  Popconfirm,
+  Row,
+  Tag,
+} from "antd";
 import { Table } from "antd";
 import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import { pageAnimate, pageTransitionX } from "../../../../data/transition";
-
+import firebase from "../../../../utils/firebase";
+import { format } from "../../../../data/dataAdminProduct";
+import ModalPayment from "./component/ModalPayment";
+const moment = require("moment");
 function AdminPayment(props) {
   const [filterTable, setFilterTable] = useState(null);
+  const [dataFireBase, setDataFireBase] = useState([]);
+  const [dataView, setDataView] = useState("");
+  const [openModal, setOpenModal] = useState(false);
 
+  const ShowCodeNumber = (number) => {
+    const string = number.toString();
+    const month = string.substr(3, 7);
+    const day = string.substr(10, 3);
+    return (
+      <>
+        <span style={{ color: "green" }}>{month}</span>
+        <span style={{ color: "red" }}>{day}</span>
+      </>
+    );
+  };
   const columns = [
     {
       title: "Action",
@@ -21,6 +47,7 @@ function AdminPayment(props) {
             type="primary"
             icon={<EyeOutlined />}
             onClick={() => handleView(record)}
+            disabled={record.status === "Cancel" ? true : false}
           />
           <Popconfirm
             placement="bottom"
@@ -38,20 +65,20 @@ function AdminPayment(props) {
       title: "STT",
       dataIndex: "index",
       width: "5%",
+      render: (text, record, index) => index + 1,
+    },
+    {
+      title: "Payment ID",
+      dataIndex: "createDate",
+      width: "10%",
+      render: (createDate) => ShowCodeNumber(createDate),
     },
     {
       title: "First Name",
       dataIndex: "firstName",
       width: "10%",
-      defaultSortOrder: "descend",
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.firstName.length - b.firstName.length,
     },
-    {
-      title: "Last Name",
-      dataIndex: "lastName",
-      width: "10%",
-    },
+
     {
       title: "Phone",
       dataIndex: "phone",
@@ -60,135 +87,159 @@ function AdminPayment(props) {
     {
       title: "Email",
       dataIndex: "email",
-      width: "25%",
-    },
-    {
-      title: "Cart",
-      dataIndex: "cart",
       width: "20%",
     },
     {
       title: "Price",
-      dataIndex: "price",
+      dataIndex: "paymentSubTotal",
       width: "10%",
-      sorter: (a, b) => a.price - b.price,
+      sorter: (a, b) => a.paymentSubTotal - b.paymentSubTotal,
+      render: (paymentSubTotal) => (
+        <>
+          <b style={{ color: "red" }}>
+            {parseInt(paymentSubTotal).toLocaleString()} ₫{" "}
+          </b>
+        </>
+      ),
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      width: "10%",
+      filters: [
+        {
+          text: "Orders",
+          value: "Orders",
+        },
+        {
+          text: "Confirmed",
+          value: "Confirmed",
+        },
+        {
+          text: "Shipping",
+          value: "Shipping",
+        },
+        {
+          text: "Success",
+          value: "Success",
+        },
+        {
+          text: "Cancel",
+          value: "Cancel",
+        },
+      ],
+      render: (status) => (
+        <>
+          <Tag
+            color={
+              (status === "Orders" && "red") ||
+              (status === "Confirmed" && "yellow") ||
+              (status === "Shipping" && "blue") ||
+              (status === "Cancel" && "gray") ||
+              (status === "Success" && "green")
+            }
+          >
+            {status}
+          </Tag>
+        </>
+      ),
+      onFilter: (value, record) => record.status.indexOf(value) === 0,
+    },
+    {
+      title: "Create Date",
+      width: "10%",
+      dataIndex: "createDate",
+      sorter: (a, b) => a.createDate - b.createDate,
+      defaultSortOrder: "descend",
+      render: (createDate) => <>{moment(createDate).format(format.dateTime)}</>,
     },
   ];
-  const data = [
-    {
-      paymentId: "ABC8",
-      customerId: "DEF1 ",
-      firstName: "Thương",
-      lastName: "Nguyễn",
-      phone: 388846810,
-      email: "nguyenvanthuong0201@gmail.com ",
-      cart: "quần shot x 1 ,áo thun x 2",
-      price: 30000000,
-    },
-    {
-      paymentId: "ABC9",
-      customerId: "DEF2 ",
-      firstName: "Thương",
-      lastName: "Nguyễn",
-      phone: 388846810,
-      email: "nguyenvanthuong0201@gmail.com ",
-      cart: "quần shot x 1 ,áo thun x 2",
-      price: 30000000,
-    },
-    {
-      paymentId: "ABC10",
-      customerId: "DEF3 ",
-      firstName: "Thương",
-      lastName: "Nguyễn",
-      phone: 388846810,
-      email: "nguyenvanthuong0201@gmail.com ",
-      cart: "quần shot x 1 ,áo thun x 2",
-      price: 30000000,
-    },
-    {
-      paymentId: "ABC11",
-      customerId: "DEF4 ",
-      firstName: "Thương",
-      lastName: "Nguyễn",
-      phone: 42424242,
-      email: "nguyenvanthuong0201@gmail.com ",
-      cart: "quần shot x 1 ,áo thun x 2",
-      price: 242424,
-    },
-    {
-      paymentId: "ABC12",
-      customerId: "DEF5 ",
-      firstName: "Trung",
-      lastName: "Nguyễn",
-      phone: 42424242,
-      email: "nguyenvanthuong0201@gmail.com ",
-      cart: "quần shot x 1 ,áo thun x 2",
-      price: 242424,
-    },
-    {
-      paymentId: "ABC13",
-      customerId: "DEF6 ",
-      firstName: "Sự",
-      lastName: "Nguyễn",
-      phone: 388846810,
-      email: "nguyenvanthuong0201@gmail.com ",
-      cart: "quần shot x 1 ,áo thun x 2",
-      price: 55544,
-    },
-    {
-      paymentId: "ABC14",
-      customerId: "DEF7 ",
-      firstName: "Thương",
-      lastName: "Nguyễn",
-      phone: 388846810,
-      email: "nguyenvanthuong0201@gmail.com ",
-      cart: "quần shot x 1 ,áo thun x 2",
-      price: 30000000,
-    },
-    {
-      paymentId: "ABC15",
-      customerId: "DEF8 ",
-      firstName: "Thương",
-      lastName: "Nguyễn",
-      phone: 388846810,
-      email: "nguyenvanthuong0201@gmail.com ",
-      cart: "quần shot x 1 ,áo thun x 2",
-      price: 30000000,
-    },
-    {
-      paymentId: "ABC16",
-      customerId: "DEF9 ",
-      firstName: "Thương",
-      lastName: "Nguyễn",
-      phone: 388846810,
-      email: "nguyenvanthuong0201@gmail.com ",
-      cart: "quần shot x 1 ,áo thun x 2",
-      price: 30000000,
-    },
-  ];
-  const handleDelete = (id) => {
-    // firebase
-    //   .firestore()
-    //   .collection("/customer")
-    //   .doc(id)
-    //   .delete()
-    //   .then(() => {
-    //     notification.success({
-    //       message: "Delete success !!!!!",
-    //       placement: "bottomLeft",
-    //       style: { backgroundColor: "greenyellow" },
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error removing document: ", error);
-    //   });
+  useEffect(() => {
+    handleClickGetAll();
+  }, []);
+
+  const handleClickGetAll = () => {
+    let tutorialsRef = firebase.firestore().collection("/payment");
+    tutorialsRef.onSnapshot((querySnapshot) => {
+      const data = [];
+      querySnapshot.forEach((doc) => {
+        const {
+          createDate,
+          address,
+          checkboxOther,
+          email,
+          firstName,
+          lastName,
+          note,
+          payment,
+          paymentSubTotal,
+          phone,
+          status,
+          typePayment,
+          addressOther,
+          emailOther,
+          firstNameOther,
+          lastNameOther,
+          phoneOther,
+          photoURL,
+        } = doc.data();
+        data.unshift({
+          key: doc.id,
+          createDate,
+          address,
+          checkboxOther,
+          email,
+          firstName,
+          lastName,
+          note,
+          payment,
+          paymentSubTotal,
+          phone,
+          status,
+          typePayment,
+          addressOther,
+          emailOther,
+          firstNameOther,
+          lastNameOther,
+          phoneOther,
+          photoURL,
+        });
+      });
+      setDataFireBase(data);
+    });
   };
+
+  for (let i = 0; i < dataFireBase; i++) {
+    dataFireBase.push({
+      index: i + 1,
+    });
+  }
+  //firebase Delete
+  const handleDelete = (id) => {
+    firebase
+      .firestore()
+      .collection("/payment")
+      .doc(id)
+      .delete()
+      .then(() => {
+        notification.success({
+          message: "Delete success !!!!!",
+          placement: "bottomLeft",
+          style: { backgroundColor: "greenyellow" },
+        });
+      })
+      .catch((error) => {
+        console.error("Error removing document: ", error);
+      });
+  };
+
   const handleView = (record) => {
-    console.log("record :>> ", record);
+    setOpenModal(true);
+    setDataView(record);
   };
   // / Search toàng cục
   const handleSearchTable = (value) => {
-    const filterTable = data.filter((o) =>
+    const filterTable = dataFireBase.filter((o) =>
       Object.keys(o).some((k) =>
         String(o[k]).toLowerCase().includes(value.toLowerCase())
       )
@@ -204,6 +255,11 @@ function AdminPayment(props) {
       variants={pageTransitionX}
       transition={pageAnimate}
     >
+      <ModalPayment
+        openModal={openModal}
+        dataView={dataView}
+        setOpenModal={setOpenModal}
+      />
       <Card style={{ borderRadius: "10px" }} size="small">
         <Row>
           <Col xs={24} md={24} lg={10}>
@@ -219,10 +275,10 @@ function AdminPayment(props) {
           <Col xs={24} md={24} lg={24}>
             <Table
               columns={columns}
-              dataSource={filterTable == null ? data : filterTable}
+              dataSource={filterTable == null ? dataFireBase : filterTable}
               pagination={{ pageSize: 10 }}
               size="small"
-              rowKey="index"
+              rowKey="createDate"
             />
           </Col>
         </Row>

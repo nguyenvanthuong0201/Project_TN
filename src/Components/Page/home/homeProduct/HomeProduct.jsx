@@ -93,7 +93,9 @@ function HomeProduct(props) {
             xxl: 10,
           }}
           pagination={{
-            pageSize: 5,
+            pageSize: 25,
+            position: "bottom",
+            style: { textAlign: "center" },
           }}
           dataSource={dataProduct}
           renderItem={(item) => (

@@ -167,6 +167,9 @@ function App() {
           <Route path="/paymentCart">
             <Home />
           </Route>
+          <Route path="/result">
+            <Home />
+          </Route>
           {/* <Redirect to="/" /> */}
         </Spin>
       </Switch>

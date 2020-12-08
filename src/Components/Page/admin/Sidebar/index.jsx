@@ -120,7 +120,7 @@ function CptSiderbar(props) {
               </div>
             </div>
             <Menu.Item key="1" icon={<TeamOutlined />}>
-              <Link to="/admin/customer">Cart</Link>
+              <Link to="/user">Order list</Link>
             </Menu.Item>
             <Menu.Item key="2" icon={<InboxOutlined />}>
               <Link to="/admin/profile">Profile</Link>

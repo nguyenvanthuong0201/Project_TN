@@ -14,53 +14,192 @@ import {
   Popconfirm,
   Descriptions,
   Radio,
+  notification,
 } from "antd";
 import Text from "antd/lib/typography/Text";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
-import { deleteCarts, paymentCustody } from "../../../../Actions";
+import {
+  deleteALlCarts,
+  deleteCarts,
+  paymentCustody,
+} from "../../../../Actions";
 import { checkBoxPayment } from "../../../../data/dataAdminProduct";
 import "./paymentCart.css";
+import firebase from "../../../../utils/firebase";
 
 const { Panel } = Collapse;
 function HomePaymentCart(props) {
   const [checkboxOther, setCheckBoxOther] = useState(false);
   const userLogin = useSelector((state) => state.reLogin);
   const reCard = useSelector((state) => state.reCard);
+  const [firebaseDataCustomer, setFirebaseDataCustomer] = useState([]);
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const handleClickGetAllCustomer = () => {
+    let customerRef = firebase.firestore().collection("/customer");
+    customerRef.onSnapshot((querySnapshot) => {
+      const data = [];
+      querySnapshot.forEach((doc) => {
+        const {
+          address,
+          createDate,
+          email,
+          firstName,
+          lastName,
+          password,
+          phone,
+          photoURL,
+        } = doc.data();
+        data.unshift({
+          key: doc.id,
+          address,
+          createDate,
+          email,
+          firstName,
+          lastName,
+          password,
+          phone,
+          photoURL,
+        });
+      });
+      setFirebaseDataCustomer(data);
+    });
+  };
 
   //// Set Thanh toán
   const string = window.location.href;
   const substring = "message=Success";
-
-  // useEffect(() => {
-  //   if (string.includes(substring)) {
-  //     // const updateStatus = "Đang xử lý";
-  //     // dispatch(oderDetail(id, updateStatus));
-  //     console.log("Câp nhap");
-  //   } else {
-  //     console.log("Không Câp nhap");
-  //     // dispatch(oderDetail(id));
-  //   }
-  // }, []);
+  console.log("firebaseDataCustomer 1 :>> ", firebaseDataCustomer);
+  useEffect(() => {
+    handleClickGetAllCustomer();
+  }, []);
   /////
   const onFinishFailed = (onFinishFailed) => {
     console.log("onFinishFailed", onFinishFailed);
   };
   const onFinish = (onFinish) => {
+    if (onFinish.note === undefined) {
+      onFinish.note = "";
+    }
+
     let value = {
       ...onFinish,
       payment: reCard,
+      photoURL: userLogin.photoURL,
       checkboxOther,
       paymentSubTotal: document.getElementById("paymentSubTotal").innerHTML,
-      status: "Tạm giữ",
+      status: "Orders",
     };
+    if (value.photoURL === undefined) {
+      value.photoURL = "";
+    }
+
     if (value.typePayment === "momo") {
+      console.log("value :>> ", value);
+      localStorage.setItem("PAYMENT", JSON.stringify(value));
       dispatch(paymentCustody(value));
     } else {
-      history.push("/");
+      localStorage.setItem("PAYMENT", JSON.stringify(value));
+      dispatch(deleteALlCarts());
+      const tutorialsRef = firebase.firestore().collection("/payment");
+      if (value.checkboxOther === false) {
+        tutorialsRef
+          .add({
+            createDate: Date.now(),
+            address: value.address,
+            checkboxOther: value.checkboxOther,
+            email: value.email,
+            firstName: value.firstName,
+            lastName: value.lastName,
+            note: value.note,
+            payment: value.payment,
+            paymentSubTotal: value.paymentSubTotal,
+            phone: value.phone,
+            status: value.status,
+            photoURL: value.photoURL,
+            typePayment: value.typePayment,
+            addressOther: value.addressOther,
+            emailOther: value.emailOther,
+            firstNameOther: value.firstNameOther,
+            lastNameOther: value.lastNameOther,
+            phoneOther: value.phoneOther,
+            lastNameOther: "",
+            firstNameOther: "",
+            emailOther: "",
+            addressOther: "",
+            phoneOther: "",
+          })
+          .then(function (docRef) {
+            notification.success({
+              message: "Buy success !!!!!",
+              placement: "bottomLeft",
+              style: { backgroundColor: "greenyellow" },
+            });
+            console.log("Tutorial created with ID: ", docRef.id);
+          })
+          .catch(function (error) {
+            console.error("Error adding Tutorial: ", error);
+          });
+      } else {
+        tutorialsRef
+          .add({
+            createDate: Date.now(),
+            address: value.address,
+            checkboxOther: value.checkboxOther,
+            email: value.email,
+            firstName: value.firstName,
+            lastName: value.lastName,
+            note: value.note,
+            payment: value.payment,
+            paymentSubTotal: value.paymentSubTotal,
+            phone: value.phone,
+            status: value.status,
+            typePayment: value.typePayment,
+            addressOther: value.addressOther,
+            emailOther: value.emailOther,
+            firstNameOther: value.firstNameOther,
+            lastNameOther: value.lastNameOther,
+            phoneOther: value.phoneOther,
+          })
+          .then(function (docRef) {
+            console.log("Tutorial created with ID: ", docRef.id);
+          })
+          .catch(function (error) {
+            console.error("Error adding Tutorial: ", error);
+          });
+      }
+      /// đặt cờ
+      let flat = false;
+      if (firebaseDataCustomer) {
+        if (firebaseDataCustomer.length > 0) {
+          firebaseDataCustomer.map((customer, index) => {
+            if (customer.email !== value.email) {
+              // Email chưa tồn tại
+              flat = true;
+            } else {
+              // Email đã  tồn tại
+              flat = false;
+            }
+          });
+        }
+      }
+      if (flat === true) {
+        const tutorialsCustomer = firebase.firestore().collection("/customer");
+        tutorialsCustomer.add({
+          address: value.address,
+          createDate: Date.now(),
+          email: value.email,
+          firstName: value.firstName,
+          lastName: value.lastName,
+          password: "123",
+          phone: value.phone,
+          photoURL: value.photoURL,
+        });
+      }
+      history.push("/result");
     }
   };
   const handleDelete = (card, key) => {
@@ -121,15 +260,6 @@ function HomePaymentCart(props) {
     return totalOther;
   };
 
-  const SumTotalShip = (card) => {
-    let total = 35000;
-    if (card.length > 0) {
-      for (let i = 0; i < card.length; i++) {
-        total += card[i].buy.amount * card[i].sale;
-      }
-    }
-    return total;
-  };
   const columns = [
     {
       title: "",
@@ -188,8 +318,6 @@ function HomePaymentCart(props) {
       ),
     },
   ];
-  console.log("checkboxOther", checkboxOther);
-  console.log("userLogin12321321321", userLogin.firstName);
   return (
     <div>
       <Row>
@@ -308,6 +436,12 @@ function HomePaymentCart(props) {
                               hasFeedback
                               label="First Name"
                               name="firstNameOther"
+                              rules={[
+                                {
+                                  required: checkboxOther,
+                                  message: "Please input your First Name!",
+                                },
+                              ]}
                             >
                               <Input type="text" />
                             </Form.Item>
@@ -317,6 +451,12 @@ function HomePaymentCart(props) {
                               hasFeedback
                               label="last Name"
                               name="lastNameOther"
+                              rules={[
+                                {
+                                  required: checkboxOther,
+                                  message: "Please input your last Name!",
+                                },
+                              ]}
                             >
                               <Input type="text" />
                             </Form.Item>
@@ -326,6 +466,12 @@ function HomePaymentCart(props) {
                               label="Phone "
                               name="phoneOther"
                               hasFeedback
+                              rules={[
+                                {
+                                  required: checkboxOther,
+                                  message: "Please input your Phone!",
+                                },
+                              ]}
                             >
                               <InputNumber style={{ width: "100%" }} />
                             </Form.Item>
@@ -335,6 +481,12 @@ function HomePaymentCart(props) {
                               label="Email"
                               name="emailOther"
                               hasFeedback
+                              rules={[
+                                {
+                                  required: checkboxOther,
+                                  message: "Please input your Email!",
+                                },
+                              ]}
                             >
                               <Input type="email" />
                             </Form.Item>
@@ -344,6 +496,12 @@ function HomePaymentCart(props) {
                               label="Address"
                               name="addressOther"
                               hasFeedback
+                              rules={[
+                                {
+                                  required: checkboxOther,
+                                  message: "Please input your Address!",
+                                },
+                              ]}
                             >
                               <Input type="text" />
                             </Form.Item>
@@ -409,7 +567,7 @@ function HomePaymentCart(props) {
                   >
                     <Col xs={24} sm={24} lg={24} xl={24}>
                       <Form.Item name="note" label="Note">
-                        <Input.TextArea type="text" />
+                        <Input.TextArea />
                       </Form.Item>
                     </Col>
                   </Col>

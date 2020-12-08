@@ -1,0 +1,15 @@
+.result_notification{
+    color: green;
+    text-align: center;
+    font-size: 25px;
+}
+.result_notification--span{
+    font-size: 16px;
+    color: black;
+}
+.result_notification--false{
+    color: red;
+    text-align: center;
+    font-size: 25px;
+}
+

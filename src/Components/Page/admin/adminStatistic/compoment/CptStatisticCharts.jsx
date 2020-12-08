@@ -51,7 +51,7 @@ const data = [
   {
     name: "Berlin",
     week: "Feb.",
-    c: 23.2,
+    c: 230.2,
   },
   {
     name: "Berlin",

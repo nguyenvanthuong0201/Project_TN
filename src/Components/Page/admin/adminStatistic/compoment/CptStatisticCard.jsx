@@ -9,34 +9,10 @@ import {
 import "../StatisticCard.css";
 import { Link } from "react-router-dom";
 
-// function animateNumber(
-//   finalNumber,
-//   duration = 5000,
-//   startNumber = 0,
-//   callback
-// ) {
-//   let currentNumber = startNumber;
-//   const interval = window.setInterval(updateNumber, 17);
-//   function updateNumber() {
-//     if (currentNumber >= finalNumber) {
-//       clearInterval(interval);
-//     } else {
-//       let inc = Math.ceil(finalNumber / (duration / 17));
-//       if (currentNumber + inc > finalNumber) {
-//         currentNumber = finalNumber;
-//         clearInterval(interval);
-//       } else {
-//         currentNumber += inc;
-//       }
-//       try {
-//         callback(currentNumber);
-//       } catch (error) {
-//         console.log("Không nên chuyển trang vội");
-//       }
-//     }
-//   }
-// }
-//// Hàm autoNumber dropTO
+import { DatePicker, Space } from "antd";
+
+const { RangePicker } = DatePicker;
+
 function easeOutExpo(x) {
   return x === 1 ? 1 : 1 - Math.pow(2, -10 * x);
 }
@@ -77,10 +53,12 @@ function CptStatisticCard(props) {
     const formattedNumber = number;
     document.getElementById("totalMoney").innerText = formattedNumber;
   });
-
+  const onChange = (date, dateString) => {
+    console.log("hello", date, dateString);
+  };
   return (
     <>
-      <Col xs={24} md={12} lg={12} className="StaticCart_col">
+      <Col xs={24} md={12} lg={12} xl={12} className="StaticCart_col">
         <Row className="StaticCart__Left StaticCart__totalCustomer ">
           <div className="StaticCart__totalCustomerTotal">
             <div
@@ -141,6 +119,11 @@ function CptStatisticCard(props) {
             See details <ArrowRightOutlined />
           </Link>
         </Row>
+      </Col>
+      <Col xs={24} md={24} lg={24} xl={24}>
+        <Space direction="vertical">
+          <RangePicker onChange={onChange} />
+        </Space>
       </Col>
     </>
   );

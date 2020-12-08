@@ -14,6 +14,7 @@ import NotFound from "../Components/Page/NotFound";
 import HomePaymentCart from "../Components/Page/home/paymentCart/";
 import Login from "../Components/Page/home/Login";
 import AdminUser from "../Components/Page/user";
+import ResultPaymentCart from "../Components/Page/home/ResutlPaymentCart";
 export const routes = [
   {
     /// điều chỉnh
@@ -73,15 +74,21 @@ export const routerHome = [
     main: () => <HomeProduct />,
   },
   {
+    path: "/contact",
+    exact: false,
+    main: () => <HomeContact />,
+  },
+  {
     path: "/introduce",
     exact: false,
     main: () => <HomeIntroduce />,
   },
   {
-    path: "/contact",
+    path: "/result",
     exact: false,
-    main: () => <HomeContact />,
+    main: () => <ResultPaymentCart />,
   },
+
   {
     path: "/viewCart",
     exact: false,

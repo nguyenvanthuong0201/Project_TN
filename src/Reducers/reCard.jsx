@@ -2,6 +2,7 @@ import {
   CART_LIST_ADD,
   CART_LIST_DELETE,
   CART_LIST_UPDATE,
+  CART_LIST_DELETE_ALL_CART,
 } from "../constant/cartConstants";
 var data = JSON.parse(localStorage.getItem("CART"));
 var initialState = data ? data : [];
@@ -10,6 +11,7 @@ function reCard(state = initialState, action) {
   var { product, key, quantity } = action;
   var index = -1;
   switch (action.type) {
+    // Thêm sản phẩm vào giỏ hàng
     case CART_LIST_ADD:
       index = findProductInCart(state, product);
       if (index !== -1) {
@@ -25,11 +27,13 @@ function reCard(state = initialState, action) {
         localStorage.setItem("CART", JSON.stringify(state));
       }
       return [...state];
+    // Delete sản phẩm khỏi giỏ hàng
     case CART_LIST_DELETE:
       console.log("action :>> ", action);
       state.splice(action.keyProduct, 1);
       localStorage.setItem("CART", JSON.stringify(state));
       return [...state];
+    // Update khi mua sản phẩm
     case CART_LIST_UPDATE:
       console.log(key, quantity);
       if (state[key].buyCart.amount < quantity) {
@@ -39,6 +43,11 @@ function reCard(state = initialState, action) {
       }
       localStorage.setItem("CART", JSON.stringify(state));
       return [...state];
+    // Delete tất cả các sản phẩm trong giỏ hàng
+    case CART_LIST_DELETE_ALL_CART:
+      localStorage.removeItem("CART");
+      return (state = []);
+
     default:
       return state;
   }
