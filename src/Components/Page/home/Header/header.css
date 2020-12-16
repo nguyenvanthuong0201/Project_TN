@@ -2,3 +2,16 @@
   body{
       font-family: Tahoma;
   }
+  .ant-avatar-lg.ant-avatar-icon {
+    font-size: 24px;
+    margin-bottom: 22px;
+}
+sup.ant-scroll-number.ant-badge-count {
+  background-color: black;
+}
+p.ant-scroll-number-only-unit.current {
+  color: white;
+}
+span.totalCard__show {
+  padding-left: 10px;
+}

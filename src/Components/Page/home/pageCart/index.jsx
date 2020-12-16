@@ -224,76 +224,81 @@ function PageCart(props) {
   ];
 
   return (
-    <div>
-      <PageHeader
-        className="site-page-header"
-        ghost={false}
-        onBack={() => window.history.back()}
-      >
-        <h1 className="pageCart_titleHeader">View Cart</h1>
-      </PageHeader>
-      <Row>
-        <Col xs={24} md={24} lg={16} xl={16}>
-          <Table
-            columns={columns}
-            dataSource={reCard}
-            pagination={{ pageSize: 10 }}
-            size="small"
-            rowKey="index"
-          />
-        </Col>
-        <Col xs={24} md={24} lg={8} xl={8}>
-          <Card>
-            <h3 className="pageCart_title">TOTAL CART</h3>
-            <Descriptions
-              bordered
-              column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
-            >
-              <Descriptions.Item label="Total Money">
-                <h1 style={{ color: "red" }}>
-                  {(
-                    SumTotalPromotion(reCard) + SumTotalOther(reCard)
-                  ).toLocaleString()}{" "}
-                  ₫
-                </h1>
-              </Descriptions.Item>
-              <Descriptions.Item label="Amount">
-                <h3>{sumAmount(reCard)}</h3>
-              </Descriptions.Item>
-            </Descriptions>
-            <Row gutter={[32, 0]} style={{ marginTop: "20px" }}>
-              <Col xs={24} md={24} lg={12} xl={12}>
-                <Button
-                  className="pageCart_continueBuying"
-                  style={{
-                    width: "100%",
-                    height: "50px",
-                  }}
-                  type="ghost"
-                >
-                  <NavLink to="/">CONTINUE BUYING</NavLink>
-                </Button>
-              </Col>
-              <Col xs={24} md={24} lg={12} xl={12}>
-                <NavLink
-                  to={
-                    reLogin.displayName === undefined
-                      ? "/login"
-                      : "/paymentCart"
-                  }
-                >
+    <div className="container">
+      <div className="col-md-12">
+        <PageHeader
+          className="site-page-header"
+          ghost={false}
+          onBack={() => window.history.back()}
+        >
+          <h1 className="pageCart_titleHeader">View Cart</h1>
+        </PageHeader>
+        <Row>
+          <Col xs={24} md={24} lg={16} xl={16}>
+            <Table
+              columns={columns}
+              dataSource={reCard}
+              pagination={{ pageSize: 5 }}
+              size="small"
+              rowKey="index"
+            />
+          </Col>
+          <Col xs={24} md={24} lg={8} xl={8}>
+            <Card>
+              <h3 className="pageCart_title">TOTAL CART</h3>
+              <Descriptions
+                bordered
+                column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
+              >
+                <Descriptions.Item label="Total Money">
+                  <h4 style={{ color: "red" }}>
+                    {(
+                      SumTotalPromotion(reCard) + SumTotalOther(reCard)
+                    ).toLocaleString()}{" "}
+                    ₫
+                  </h4>
+                </Descriptions.Item>
+                <Descriptions.Item label="Amount">
+                  <h5>{sumAmount(reCard)}</h5>
+                </Descriptions.Item>
+              </Descriptions>
+              <Row gutter={[32, 0]} style={{ marginTop: "20px" }}>
+                <Col xs={24} md={24} lg={12} xl={12}>
                   <Button
-                    style={{ width: "100%", height: "50px" }}
-                    type="primary"
+                    className="pageCart_continueBuying"
+                    style={{
+                      width: "100%",
+                      height: "50px",
+                    }}
+                    type="ghost"
                   >
-                    CONTINUE PAYMENT
+                    <NavLink to="/"> BUYING</NavLink>
                   </Button>
-                </NavLink>
-              </Col>
-            </Row>
-          </Card>
-        </Col>
-      </Row>
+                </Col>
+                <Col xs={24} md={24} lg={12} xl={12}>
+                  <NavLink
+                    to={
+                      reLogin.displayName === undefined
+                        ? "/login"
+                        : "/paymentCart"
+                    }
+                  >
+                    <Button
+                      style={{
+                        width: "100%",
+                        height: "50px",
+                        backgroundColor: "#B22222",
+                      }}
+                    >
+                      PAYMENT
+                    </Button>
+                  </NavLink>
+                </Col>
+              </Row>
+            </Card>
+          </Col>
+        </Row>
+      </div>
     </div>
   );
 }

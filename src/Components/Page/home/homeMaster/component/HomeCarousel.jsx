@@ -1,53 +1,25 @@
 import React, { Component } from "react";
-import { Carousel } from "antd";
-import Carousel1 from "../../../../../Assets/images/carousel1.png";
-import Carousel2 from "../../../../../Assets/images/carousel2.png";
-import Carousel3 from "../../../../../Assets/images/carousel3.png";
-import Carousel4 from "../../../../../Assets/images/carousel4.png";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from "react-responsive-carousel";
 
 export default class HomeCarousel extends Component {
-  contentStyle = {
-    height: "300px",
-    color: "#fff",
-    lineHeight: "160px",
-    textAlign: "center",
-    backgroundColor: "cover",
-    width: "100%",
-  };
   render() {
     return (
-      <Carousel autoplay dotPosition="bottom">
+      <Carousel autoPlay>
         <div>
-          <img
-            style={this.contentStyle}
-            key={2}
-            src={Carousel1}
-            alt="carousel_2"
-          />
+          <img alt="" src="images/banner1.png" />
         </div>
         <div>
-          <img
-            style={this.contentStyle}
-            key={2}
-            src={Carousel2}
-            alt="carousel_2"
-          />
+          <img alt="" src="images/banner2.png" />
         </div>
         <div>
-          <img
-            style={this.contentStyle}
-            key={3}
-            src={Carousel3}
-            alt="carousel_3"
-          />
+          <img alt="" src="images/banner3.png" />
         </div>
         <div>
-          <img
-            style={this.contentStyle}
-            key={4}
-            src={Carousel4}
-            alt="carousel_4"
-          />
+          <img alt="" src="images/banner4.png" />
+        </div>
+        <div>
+          <img alt="" src="images/banner5.png" />
         </div>
       </Carousel>
     );

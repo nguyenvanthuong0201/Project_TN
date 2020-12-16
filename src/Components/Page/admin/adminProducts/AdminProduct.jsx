@@ -210,10 +210,10 @@ function AdminProduct(props) {
       width: "10%",
       dataIndex: "buy",
       defaultSortOrder: "descend",
-      sorter: (a, b) => a.sale - b.sale,
-      render: (sale) => (
+      sorter: (a, b) => a.buy - b.buy,
+      render: (buy) => (
         <>
-          <b style={{ color: "red" }}>{parseInt(sale).toLocaleString()} ₫ </b>
+          <b style={{ color: "red" }}>{parseInt(buy).toLocaleString()} ₫ </b>
         </>
       ),
     },
@@ -225,7 +225,10 @@ function AdminProduct(props) {
       sorter: (a, b) => a.sale - b.sale,
       render: (sale) => (
         <>
-          <b style={{ color: "red" }}>{parseInt(sale).toLocaleString()} ₫ </b>
+          <b style={{ color: "red" }}>
+            {sale === 0 ? "No Promotion" : parseInt(sale).toLocaleString()}{" "}
+            {sale === 0 ? "" : "₫"}{" "}
+          </b>
         </>
       ),
     },
@@ -330,6 +333,7 @@ function AdminProduct(props) {
                 enterButton
                 onSearch={handleSearchTable}
                 allowClear={true}
+                style={{ backgroundColor: "#FDA30E" }}
               />
             </Col>
           </div>
@@ -346,6 +350,7 @@ function AdminProduct(props) {
                 onClick={onAddProduct}
                 block
                 icon={<PlusSquareOutlined />}
+                style={{ backgroundColor: "#FDA30E" }}
               >
                 Add Product
               </Button>

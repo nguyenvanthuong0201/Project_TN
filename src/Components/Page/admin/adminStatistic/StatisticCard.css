@@ -15,12 +15,12 @@
 
 }
 .StaticCart__Left{
-    background-color: rgb(20, 159, 188);
+    background-color: #FDA30E;
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
 }
 .StaticCart__totalCustomer--link{
-    background-color: #128FA9;
+    background-color: #C9810A;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
     text-align: center;
@@ -28,7 +28,7 @@
     color: #D0E9EE;
 }
 .StaticCart__totalCustomer--link:hover{
-    background-color: #1187A0;
+    background-color: #C9810A;
     color: white;
 }
 .StaticCart__totalCustomerIcon {

@@ -27,9 +27,9 @@ function CptSiderbar(props) {
           <Menu mode="inline" theme="dark">
             <div className="logo_logoContent">
               <CusIcon />
-              <div className="logo_logoIconTitle">
+              {/* <div className="logo_logoIconTitle">
                 {collapsed ? "" : "ChinChan"}
-              </div>
+              </div> */}
             </div>
             <Menu.Item key="2" icon={<LineChartOutlined />}>
               <Link to="/admin">Statistic</Link>
@@ -59,9 +59,6 @@ function CptSiderbar(props) {
           <Menu mode="inline" theme="dark">
             <div className="logo_logoContent">
               <CusIcon />
-              <div className="logo_logoIconTitle">
-                {collapsed ? "" : "ChinChan"}
-              </div>
             </div>
             <Menu.Item key="2" icon={<LineChartOutlined />}>
               <Link to="/admin">Statistic</Link>
@@ -90,9 +87,6 @@ function CptSiderbar(props) {
           <Menu mode="inline" theme="dark">
             <div className="logo_logoContent">
               <CusIcon />
-              <div className="logo_logoIconTitle">
-                {collapsed ? "" : "ChinChan"}
-              </div>
             </div>
             <Menu.Item key="3" icon={<TeamOutlined />}>
               <Link to="/admin/customer">Customer</Link>
@@ -110,14 +104,11 @@ function CptSiderbar(props) {
             </SubMenu>
           </Menu>
         );
-      } else {
+      } else if (userLogin.position === "customer") {
         return (
           <Menu mode="inline" theme="dark">
             <div className="logo_logoContent">
               <CusIcon />
-              <div className="logo_logoIconTitle">
-                {collapsed ? "" : "ChinChan"}
-              </div>
             </div>
             <Menu.Item key="1" icon={<TeamOutlined />}>
               <Link to="/user">Order list</Link>
@@ -125,6 +116,14 @@ function CptSiderbar(props) {
             <Menu.Item key="2" icon={<InboxOutlined />}>
               <Link to="/admin/profile">Profile</Link>
             </Menu.Item>
+          </Menu>
+        );
+      } else {
+        return (
+          <Menu mode="inline" theme="dark">
+            <div className="logo_logoContent">
+              <CusIcon />
+            </div>
           </Menu>
         );
       }

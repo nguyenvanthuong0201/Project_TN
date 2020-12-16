@@ -15,6 +15,9 @@
     width: 100%;    
     text-align: center;
     margin-bottom: 10px;
-    background-color: #00C2CB;
+    background-color: #FDA30E;
     height: 80px;
+}
+button.ant-btn.ant-btn-primary.ant-input-search-button {
+    background-color: #FDA30E;
 }

@@ -11,3 +11,6 @@
   right: 30px;
   color: currentcolor;
 }
+.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  background-color: #FDA30E;
+}

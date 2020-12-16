@@ -2,10 +2,7 @@ import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/splide/dist/css/themes/splide-default.min.css";
 import "@splidejs/splide/dist/css/themes/splide-sea-green.min.css";
 import "@splidejs/splide/dist/css/themes/splide-skyblue.min.css";
-import Logo from "../../../../../Assets/images/Logo.png";
-import ao1 from "../../../../../Assets/images/ao1-1.png";
-import { Card } from "antd";
-import Meta from "antd/lib/card/Meta";
+import { List } from "antd";
 import React, { useState } from "react";
 import InformationModal from "./InformationModal";
 
@@ -25,78 +22,156 @@ function HomeSlideProduct(props) {
     setOpenModal(false);
   };
   console.log("dataProductNew :>> ", dataProductNew);
-  console.log("dataProductPromotion :>> ", dataProductPromotion);
   return (
-    <div>
-      Open Modal
+    <div className="new_arrivals">
       <InformationModal
         openModal={openModal}
         handleOk={handleOk}
         handleCancel={handleCancel}
         dataView={dataView}
       />
-      <h1 style={{ textAlign: "center" }}>New Arrivals</h1>
-      <hr style={{ width: "600px", margin: "auto" }} />
-      <Splide
-        options={{
-          rewind: true,
-          perPage: 5,
-          perMove: 1,
-          gap: "1rem",
-        }}
-        id="splide2"
-      >
-        {dataProductNew.map((data, index) => {
-          return (
-            <SplideSlide key={index}>
-              <Card
-                onClick={() => information(data)}
-                hoverable
-                style={{ width: 240 }}
-                cover={<img alt="example" src={data.picture} />}
-              >
-                <h3 style={{ textAlign: "center", color: "red" }}>
-                  {data.buy.toLocaleString()} ₫
-                </h3>
-              </Card>
-            </SplideSlide>
-          );
-        })}
-      </Splide>
-      <h1 style={{ textAlign: "center" }}>Promotion</h1>
-      <hr style={{ width: "600px", margin: "auto" }} />
-      <Splide
-        options={{
-          rewind: true,
-          perPage: 5,
-          perMove: 1,
-          gap: "1rem",
-        }}
-        id="splide2"
-      >
-        {dataProductPromotion.map((data, index) => {
-          return (
-            <SplideSlide key={index + 99}>
-              <Card
-                onClick={() => information(data)}
-                hoverable
-                style={{ width: 240 }}
-                cover={<img alt="example" src={data.picture} />}
-              >
-                <h3>
-                  <span style={{ color: "gray" }}>
-                    {data.buy.toLocaleString()} ₫
-                  </span>
-                  &rarr;
-                  <span style={{ color: "red" }}>
-                    {data.sale.toLocaleString()} ₫
-                  </span>
-                </h3>
-              </Card>
-            </SplideSlide>
-          );
-        })}
-      </Splide>
+      <h3>
+        <span>new </span>arrivals
+      </h3>
+      <hr className="master_hr" />
+      <div className="product-easy">
+        <div className="container">
+          <div className="sap_tabs">
+            <div
+              id="horizontalTab"
+              style={{ display: "block", width: "100%", margin: "0px" }}
+            >
+              <div className="resp-tabs-container">
+                <List
+                  grid={{
+                    gutter: 16,
+                    xs: 1,
+                    sm: 2,
+                    md: 3,
+                    lg: 4,
+                    xl: 4,
+                    xxl: 4,
+                  }}
+                  pagination={{
+                    pageSize: 8,
+                    position: "bottom",
+                    style: { textAlign: "center" },
+                  }}
+                  dataSource={dataProductNew}
+                  renderItem={(item) => (
+                    <List.Item>
+                      <div className="product-men">
+                        <div className="men-pro-item simpleCart_shelfItem">
+                          <div className="men-thumb-item">
+                            <img
+                              src={item.picture}
+                              alt=""
+                              className="pro-image-front"
+                            />
+                            <img
+                              src={item.picture}
+                              alt=""
+                              className="pro-image-back"
+                            />
+                          </div>
+                          <div className="item-info-product ">
+                            <h4>
+                              <a href="#">{item.title}</a>
+                            </h4>
+                            <div className="info-product-price">
+                              <span className="item_price">
+                                {item.buy.toLocaleString()} ₫
+                              </span>
+                            </div>
+                            <a
+                              onClick={() => information(item)}
+                              className="item_add single-item hvr-outline-out button2"
+                            >
+                              Add to cart
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </List.Item>
+                  )}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3>
+        <span>hot </span>Promotion
+      </h3>
+      <hr className="master_hr" />
+      <div className="product-easy">
+        <div className="container">
+          <div className="sap_tabs">
+            <div
+              id="horizontalTab"
+              style={{ display: "block", width: "100%", margin: "0px" }}
+            >
+              <div className="resp-tabs-container">
+                <List
+                  grid={{
+                    gutter: 16,
+                    xs: 1,
+                    sm: 2,
+                    md: 3,
+                    lg: 4,
+                    xl: 4,
+                    xxl: 4,
+                  }}
+                  pagination={{
+                    pageSize: 8,
+                    position: "bottom",
+                    style: { textAlign: "center" },
+                  }}
+                  dataSource={dataProductPromotion}
+                  renderItem={(item) => (
+                    <List.Item>
+                      <div className="product-men">
+                        <div className="men-pro-item simpleCart_shelfItem">
+                          <div className="men-thumb-item">
+                            <img
+                              src={item.picture}
+                              alt=""
+                              className="pro-image-front"
+                            />
+                            <img
+                              src={item.picture}
+                              alt=""
+                              className="pro-image-back"
+                            />
+                          </div>
+                          <div className="item-info-product ">
+                            <h4>
+                              <a href="#">{item.title}</a>
+                            </h4>
+                            <div className="info-product-price">
+                              <span className="item_price">
+                                {item.sale.toLocaleString()} ₫
+                              </span>
+                              <del>{item.buy.toLocaleString()} ₫</del>
+                            </div>
+                            <a
+                              className="item_add single-item hvr-outline-out button2"
+                              onClick={() => information(item)}
+                            >
+                              Add to cart
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </List.Item>
+                  )}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

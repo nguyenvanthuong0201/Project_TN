@@ -85,6 +85,7 @@ function CptHeader(props) {
         <div className="Header__account">
           <Dropdown overlay={menu} placement="bottomLeft">
             <Avatar
+              className="AvatarHeader"
               src={userLogin.photoURL}
               size="large"
               icon={<UserOutlined />}

@@ -49,10 +49,7 @@ const paymentCustody = (product) => async (dispatch) => {
     "https://test-payment.momo.vn/gw_payment/transactionProcessor",
     myBodyJsonString
   );
-  console.log("object :>>dataResponseMoMo ", dataResponseMoMo);
-  console.log("dataRequestMomo :>> ", dataRequestMomo);
-  console.log("dataRequestMomo :>> ", dataResponseMoMo.data.message);
-  console.log("product :>> ", product);
+
   if (dataResponseMoMo.data.message === "Success") {
     const tutorialsRef = firebase.firestore().collection("/payment");
     if (product.checkboxOther === false) {
@@ -76,6 +73,7 @@ const paymentCustody = (product) => async (dispatch) => {
           firstNameOther: product.firstNameOther,
           lastNameOther: product.lastNameOther,
           phoneOther: product.phoneOther,
+          position: product.position,
           lastNameOther: "",
           firstNameOther: "",
           emailOther: "",
@@ -103,6 +101,7 @@ const paymentCustody = (product) => async (dispatch) => {
           paymentSubTotal: product.paymentSubTotal,
           phone: product.phone,
           status: product.status,
+          position: product.position,
           typePayment: product.typePayment,
           addressOther: product.addressOther,
           emailOther: product.emailOther,

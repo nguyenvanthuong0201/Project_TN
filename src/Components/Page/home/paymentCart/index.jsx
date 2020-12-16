@@ -92,6 +92,7 @@ function HomePaymentCart(props) {
       checkboxOther,
       paymentSubTotal: document.getElementById("paymentSubTotal").innerHTML,
       status: "Orders",
+      position: "customer",
     };
     if (value.photoURL === undefined) {
       value.photoURL = "";
@@ -126,6 +127,7 @@ function HomePaymentCart(props) {
             firstNameOther: value.firstNameOther,
             lastNameOther: value.lastNameOther,
             phoneOther: value.phoneOther,
+            position: value.position,
             lastNameOther: "",
             firstNameOther: "",
             emailOther: "",
@@ -160,6 +162,7 @@ function HomePaymentCart(props) {
             typePayment: value.typePayment,
             addressOther: value.addressOther,
             emailOther: value.emailOther,
+            position: value.position,
             firstNameOther: value.firstNameOther,
             lastNameOther: value.lastNameOther,
             phoneOther: value.phoneOther,
@@ -197,6 +200,7 @@ function HomePaymentCart(props) {
           password: "123",
           phone: value.phone,
           photoURL: value.photoURL,
+          position: value.position,
         });
       }
       history.push("/result");
@@ -325,10 +329,11 @@ function HomePaymentCart(props) {
           <Card style={{ borderRadius: "10px" }} size="small">
             <PageHeader
               className="site-page-header"
-              title="Payment"
               ghost={false}
               onBack={() => window.history.back()}
-            />
+            >
+              <h1 className="pageCart_titleHeader">PAYMENT</h1>
+            </PageHeader>
             {userLogin && (
               <Form
                 name="basic"

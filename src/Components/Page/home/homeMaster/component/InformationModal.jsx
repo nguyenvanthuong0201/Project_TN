@@ -11,6 +11,7 @@ import {
   Row,
   Radio,
   notification,
+  Image,
 } from "antd";
 import DrawerCart from "../../Cart/DrawerCart";
 import { listCarts } from "../../../../../Actions/cartActions.js";
@@ -60,7 +61,6 @@ function InformationModal(props) {
   console.log(dataView, "dataView");
   return (
     <Modal
-      title="Information Product"
       visible={openModal}
       onOk={handleOk}
       onCancel={handleCancel}
@@ -78,7 +78,7 @@ function InformationModal(props) {
       {/* ----- */}
       <Row gutter={[32, 0]}>
         <Col xs={24} md={24} lg={8} xl={8}>
-          <img
+          <Image
             style={{ width: "100%" }}
             src={dataView.picture}
             alt="Img-product"
@@ -126,7 +126,7 @@ function InformationModal(props) {
                     <Button
                       type="ghost"
                       style={{
-                        backgroundColor: "#008000",
+                        backgroundColor: "#FDA30E",
                         width: "100%",
                         height: "50px",
                         fontWeight: "bold",

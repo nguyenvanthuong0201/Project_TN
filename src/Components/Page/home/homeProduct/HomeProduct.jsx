@@ -1,4 +1,4 @@
-import { List, Card } from "antd";
+import { List, Card, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import firebase from "../../../../utils/firebase";
 import { motion } from "framer-motion";
@@ -81,42 +81,130 @@ function HomeProduct(props) {
         handleCancel={handleCancel}
         dataView={dataView}
       />
-      <Card style={{ borderRadius: "10px" }} size="small">
-        <List
-          grid={{
-            gutter: 16,
-            xs: 1,
-            sm: 2,
-            md: 4,
-            lg: 4,
-            xl: 5,
-            xxl: 10,
-          }}
-          pagination={{
-            pageSize: 25,
-            position: "bottom",
-            style: { textAlign: "center" },
-          }}
-          dataSource={dataProduct}
-          renderItem={(item) => (
-            <List.Item>
-              <Card
-                onClick={() => information(item)}
-                hoverable
-                style={{ width: 240 }}
-                cover={<img alt="example" src={item.picture} />}
+      <div class="men-wear">
+        <div class="container">
+          <div class="col-md-12 products-right">
+            <h5>Product Compare(0)</h5>
+            <div class="sort-grid">
+              <div class="sorting">
+                <h6>Sort By</h6>
+                <select
+                  id="country1"
+                  onchange="change_country(this.value)"
+                  class="frm-field required sect"
+                >
+                  <option value="null">Default</option>
+                  <option value="null">Name(A - Z)</option>
+                  <option value="null">Name(Z - A)</option>
+                  <option value="null">Price(High - Low)</option>
+                  <option value="null">Price(Low - High)</option>
+                  <option value="null">Model(A - Z)</option>
+                  <option value="null">Model(Z - A)</option>
+                </select>
+                <div class="clearfix"></div>
+              </div>
+              <div class="sorting">
+                <h6>Showing</h6>
+                <select
+                  id="country2"
+                  onchange="change_country(this.value)"
+                  class="frm-field required sect"
+                >
+                  <option value="null">7</option>
+                  <option value="null">14</option>
+                  <option value="null">28</option>
+                  <option value="null">35</option>
+                </select>
+                <div class="clearfix"></div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <div class="men-wear-top">
+              <div class="clearfix"></div>
+            </div>
+            <div className="sap_tabs">
+              <div
+                id="horizontalTab"
+                style={{ display: "block", width: "100%", margin: "0px" }}
               >
-                <h3 style={{ textAlign: "center", color: "red" }}>
-                  {item.option === "Promotion"
-                    ? item.sale.toLocaleString()
-                    : item.buy.toLocaleString()}
-                  ₫
-                </h3>
-              </Card>
-            </List.Item>
-          )}
-        />
-      </Card>
+                <div className="resp-tabs-container">
+                  <List
+                    grid={{
+                      gutter: 16,
+                      xs: 1,
+                      sm: 2,
+                      md: 3,
+                      lg: 4,
+                      xl: 4,
+                      xxl: 4,
+                    }}
+                    pagination={{
+                      pageSize: 16,
+                      position: "bottom",
+                      style: { textAlign: "center" },
+                    }}
+                    dataSource={dataProduct}
+                    renderItem={(item) => (
+                      <List.Item>
+                        <div className="product-men">
+                          <div className="men-pro-item simpleCart_shelfItem">
+                            <div className="men-thumb-item">
+                              <img
+                                src={item.picture}
+                                alt=""
+                                className="pro-image-front"
+                              />
+                              <img
+                                src={item.picture}
+                                alt=""
+                                className="pro-image-back"
+                              />
+                            </div>
+                            <div className="item-info-product ">
+                              <h4>
+                                <a href="#">{item.title}</a>
+                              </h4>
+                              <Tag
+                                color={
+                                  (item.option === "Promotion" && "red") ||
+                                  (item.option === "New" && "blue")
+                                }
+                              >
+                                {item.option === "Other" ? "" : item.option}
+                              </Tag>
+                              <div className="info-product-price">
+                                {item.sale === 0 ? (
+                                  <span className="item_price">
+                                    {item.buy.toLocaleString()} ₫
+                                  </span>
+                                ) : (
+                                  <>
+                                    <span className="item_price">
+                                      {item.sale.toLocaleString()} ₫
+                                    </span>
+                                    <del>{item.buy.toLocaleString()} ₫</del>
+                                  </>
+                                )}
+                              </div>
+                              <a
+                                className="item_add single-item hvr-outline-out button2"
+                                onClick={() => information(item)}
+                              >
+                                Add to cart
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </List.Item>
+                    )}
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      </div>
     </motion.div>
   );
 }

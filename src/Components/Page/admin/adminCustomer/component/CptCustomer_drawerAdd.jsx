@@ -26,6 +26,7 @@ function CptCustomer_drawerAdd(props) {
     const body = {
       ...value,
       key: "",
+      position: "customer",
     };
     const id = "Customer_" + Date.now();
     const storageRef = firebase.storage().ref("images-Customer").child(id);
@@ -43,6 +44,7 @@ function CptCustomer_drawerAdd(props) {
             email: body.email,
             address: body.address,
             picture: url,
+            position: body.position,
           })
           .then(function (docRef) {
             form.resetFields();

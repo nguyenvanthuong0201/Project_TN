@@ -83,7 +83,10 @@ function CptStatisticCard(props) {
           </div>
         </Row>
         <Row>
-          <Link to="/" className="StaticCart__totalCustomer--link">
+          <Link
+            to="/admin/customer"
+            className="StaticCart__totalCustomer--link"
+          >
             See details <ArrowRightOutlined />
           </Link>
         </Row>
@@ -115,7 +118,7 @@ function CptStatisticCard(props) {
           </div>
         </Row>
         <Row>
-          <Link to="/" className="StaticCart__totalCustomer--link">
+          <Link to="/admin/payment" className="StaticCart__totalCustomer--link">
             See details <ArrowRightOutlined />
           </Link>
         </Row>

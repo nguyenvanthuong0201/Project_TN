@@ -241,6 +241,7 @@ function AdminEmployee(props) {
               enterButton
               onSearch={handleSearchTable}
               allowClear={true}
+              style={{ backgroundColor: "#FDA30E" }}
             />
           </Col>
           <Col xs={24} md={24} lg={3} offset={11}>
@@ -249,6 +250,7 @@ function AdminEmployee(props) {
               block
               icon={<PlusSquareOutlined />}
               onClick={handleOpenDrawer}
+              style={{ backgroundColor: "#FDA30E" }}
             >
               Add employee
             </Button>

@@ -11,22 +11,11 @@ class HomeBannerBottom extends Component {
   };
   render() {
     return (
-      <Row style={{ marginTop: "20px" }}>
-        <Col xs={24} md={24} lg={12} xl={12}>
-          <img
-            src={BannerBottom1}
-            style={this.contentStyle}
-            alt="pictureBottom 1"
-          />
-        </Col>
-        <Col xs={24} md={24} lg={12} xl={12}>
-          <img
-            src={BannerBottom2}
-            style={this.contentStyle}
-            alt="pictureBottom 2"
-          />
-        </Col>
-      </Row>
+      <div class="page-head">
+        <div class="container">
+          <h3>Home</h3>
+        </div>
+      </div>
     );
   }
 }

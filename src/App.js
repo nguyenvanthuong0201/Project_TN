@@ -8,6 +8,7 @@ import "./App.css";
 import PageAdmin from "./Components/Page/admin";
 import Home from "./Components/Page/home";
 import firebase from "./utils/firebase";
+import $ from "jquery";
 
 function App() {
   //handle firebase aut changed
@@ -66,6 +67,7 @@ function App() {
           address,
           picture,
           createDay,
+          position,
         } = doc.data();
         data.push({
           key: doc.id,
@@ -77,6 +79,7 @@ function App() {
           address,
           picture,
           createDay,
+          position,
         });
       });
       setDataFireBaseCustomer(data);
@@ -93,7 +96,7 @@ function App() {
           dispatch(logoutUser());
         } else {
           setUserLogin(user);
-          // dispatch(loginUser(user));
+          dispatch(loginUser(user));
         }
       });
     return () => unregisterAuthObserver();
@@ -126,6 +129,7 @@ function App() {
       photoURL: userLogin.photoURL,
     }
   );
+  console.log("dataCustomer", dataCustomer);
 
   if (dataEmployee !== undefined) {
     dispatch(loginUser(targeEmployee));
@@ -162,6 +166,12 @@ function App() {
             <Home />
           </Route>
           <Route path="/product">
+            <Home />
+          </Route>
+          <Route path="/introduce">
+            <Home />
+          </Route>
+          <Route path="/contact">
             <Home />
           </Route>
           <Route path="/paymentCart">

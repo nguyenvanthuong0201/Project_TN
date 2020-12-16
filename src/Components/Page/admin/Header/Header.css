@@ -17,3 +17,6 @@ header.ant-layout-header.site-layout-background.Header {
   display: flex;
   flex-wrap: wrap;
 }
+span.ant-avatar.ant-avatar-lg.ant-avatar-circle.ant-avatar-image.ant-avatar-icon.ant-dropdown-trigger.AvatarHeader {
+  margin-bottom: 0px;
+}

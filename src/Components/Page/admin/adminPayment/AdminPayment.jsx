@@ -157,7 +157,7 @@ function AdminPayment(props) {
   useEffect(() => {
     handleClickGetAll();
   }, []);
-
+  console.log("dataFireBase :>> ", dataFireBase);
   const handleClickGetAll = () => {
     let tutorialsRef = firebase.firestore().collection("/payment");
     tutorialsRef.onSnapshot((querySnapshot) => {
@@ -268,6 +268,7 @@ function AdminPayment(props) {
               enterButton
               onSearch={handleSearchTable}
               allowClear={true}
+              style={{ backgroundColor: "#FDA30E" }}
             />
           </Col>
         </Row>

@@ -146,6 +146,8 @@ function AdminCustomer(props) {
           address,
           picture,
           createDay,
+          position,
+          photoURL,
         } = doc.data();
         data.push({
           key: doc.id,
@@ -157,6 +159,8 @@ function AdminCustomer(props) {
           address,
           picture,
           createDay,
+          position,
+          photoURL,
         });
         console.log("dataCustomer", data);
       });
@@ -187,6 +191,7 @@ function AdminCustomer(props) {
             <Row>
               <Col xs={24} md={24} lg={10}>
                 <Input.Search
+                  style={{ backgroundColor: "#FDA30E" }}
                   placeholder="Search by..."
                   enterButton
                   onSearch={handleSearchTable}
@@ -195,10 +200,11 @@ function AdminCustomer(props) {
               </Col>
               <Col xs={24} md={24} lg={3} offset={11}>
                 <Button
-                  type="primary"
+                  style={{ backgroundColor: "#FDA30E" }}
                   block
                   icon={<PlusSquareOutlined />}
                   onClick={() => setDrawer(true)}
+                  type="primary"
                 >
                   Add
                 </Button>

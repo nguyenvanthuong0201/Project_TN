@@ -226,7 +226,9 @@ function ModalPayment(props) {
             <Descriptions.Item label="Address">
               {dataView.address}
             </Descriptions.Item>
-            <Descriptions.Item label="Money Ship">35,000 ₫</Descriptions.Item>
+            <Descriptions.Item label="Money Ship">
+              <b style={{ color: "red" }}>35,000 ₫</b>
+            </Descriptions.Item>
             <Descriptions.Item label="TypePayment">
               {dataView.typePayment ? "Payment on delivery" : "Mo mo "}
             </Descriptions.Item>
@@ -234,9 +236,35 @@ function ModalPayment(props) {
               {dataView.note === "" ? "No note" : dataView.note}
             </Descriptions.Item>
             <Descriptions.Item label="Money">
-              {parseInt(dataView.paymentSubTotal).toLocaleString()} ₫
+              <b style={{ color: "red" }}>
+                {" "}
+                {parseInt(dataView.paymentSubTotal).toLocaleString()} ₫
+              </b>
             </Descriptions.Item>
           </Descriptions>
+          {dataView.checkboxOther === true ? (
+            <Descriptions
+              title="Information Other"
+              bordered
+              column={{ xxl: 3, xl: 2, lg: 2, md: 2, sm: 2, xs: 1 }}
+            >
+              <Descriptions.Item label="FullName Other">
+                {dataView.firstNameOther}
+                {dataView.lastNameOther}
+              </Descriptions.Item>
+              <Descriptions.Item label="Phone Other">
+                {dataView.phoneOther}
+              </Descriptions.Item>
+              <Descriptions.Item label="Email Other">
+                {dataView.emailOther}
+              </Descriptions.Item>
+              <Descriptions.Item label="Address Other">
+                {dataView.addressOther}
+              </Descriptions.Item>
+            </Descriptions>
+          ) : (
+            ""
+          )}
         </Col>
       </Row>
       <Row>

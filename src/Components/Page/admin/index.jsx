@@ -9,7 +9,6 @@ import {
 } from "react-router-dom";
 import CptSiderbar from "./Sidebar";
 import CptHeader from "./Header";
-import CptFooter from "./Footer/";
 import { routes } from "../../../routers";
 import { useSelector } from "react-redux";
 import { AnimatePresence } from "framer-motion";
@@ -68,7 +67,7 @@ function PageAdmin(props) {
               </Content>
               {/* End Content */}
               {/* Start Footer */}
-              <CptFooter />
+              {/* <CptFooter /> */}
               {/* End Footer */}
             </Layout>
           </Layout>
