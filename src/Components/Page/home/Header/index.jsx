@@ -55,9 +55,7 @@ function HeaderHome(props) {
   const logout = () => {
     dispatch({ type: "OPEN_SPIN" });
     firebaseLogout();
-    console.log("loggg");
   };
-  console.log("userLogin12 :>> ", userLogin);
   const toPageAdmin = () => {
     if (userLogin) {
       if (userLogin.position === "admin") {

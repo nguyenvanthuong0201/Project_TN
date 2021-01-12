@@ -6,7 +6,6 @@ import {
 } from "../constant/cartConstants";
 
 const listCarts = (product, quantity) => async (dispatch) => {
-  // console.log("action", product, quantity);
   dispatch({ type: CART_LIST_ADD, product, quantity });
 };
 const deleteCarts = (keyProduct) => async (dispatch) => {
@@ -16,7 +15,6 @@ const deleteALlCarts = () => async (dispatch) => {
   dispatch({ type: CART_LIST_DELETE_ALL_CART });
 };
 const updateCarts = (key, quantity, size) => async (dispatch) => {
-  // console.log(key, quantity);
   dispatch({ type: CART_LIST_UPDATE, key, quantity, size });
 };
 // const addCarts = (product,quantity)

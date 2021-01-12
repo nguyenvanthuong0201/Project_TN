@@ -6,6 +6,7 @@ export const sizeAdminProduct = [
   { label: "XXL", value: "XXL" },
 ];
 export const format = {
+  month: "MM-YYYY",
   date: "DD-MM-YYYY",
   dateTime: "DD-MM-YYYY HH:mm",
   dateTimes: "DD-MM-YYYY HH:mm:ss",

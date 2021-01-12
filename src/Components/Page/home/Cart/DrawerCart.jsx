@@ -15,9 +15,6 @@ function DrawerCart(props) {
     setDrawer(false);
   };
   const updateQuantity = (key, amount, e) => {
-    console.log("index", key);
-    console.log("value", e);
-
     dispatch(updateCarts(key, e));
   };
   return (

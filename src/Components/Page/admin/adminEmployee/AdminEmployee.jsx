@@ -69,7 +69,6 @@ function AdminEmployee(props) {
           gender,
           createDay,
         });
-        console.log(data, "data");
       });
       setDataFireBase(data);
     });
@@ -99,19 +98,7 @@ function AdminEmployee(props) {
         </>
       ),
     },
-    {
-      title: "Avatar",
-      dataIndex: "picture",
-      width: "10%",
-      render: (createDate) => (
-        <>
-          <Image
-            style={{ width: "5px", height: "5px", cursor: "pointer" }}
-            src={createDate}
-          />
-        </>
-      ),
-    },
+
     {
       title: "First Name",
       dataIndex: "firstName",

@@ -32,7 +32,6 @@ function EditProduct(props) {
       setSalePromotion(true);
     }
   };
-  console.log("bodyEdit", bodyEdit);
   const onFinish = async (value) => {
     if (value.sale === undefined) {
       value.sale = 0;
@@ -40,7 +39,6 @@ function EditProduct(props) {
     const body = {
       ...value,
     };
-    console.log("body", body);
     const id = "Product_" + Date.now();
     const storageRef = firebase.storage().ref("images-product").child(id);
     if (typeof body.picture === "undefined") {
@@ -111,7 +109,6 @@ function EditProduct(props) {
     console.log("onFinishFailed", onFinishFailed);
   };
   const normFile = (e) => {
-    console.log("Upload event:", e);
     if (Array.isArray(e)) {
       return e;
     }

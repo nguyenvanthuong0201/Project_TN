@@ -51,7 +51,6 @@ function CptHeader(props) {
   const logout = () => {
     dispatch({ type: "OPEN_SPIN" });
     firebaseLogout();
-    console.log("loggg");
   };
   const ToCart = () => {
     window.location.href = PATH.MASTER;

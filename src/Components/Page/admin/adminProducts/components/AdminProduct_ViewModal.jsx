@@ -5,7 +5,6 @@ import { format } from "../../../../../data/dataAdminProduct";
 const moment = require("moment");
 function AdminProduct_ViewModal(props) {
   let { openModal, dataView, handleOk, handleCancel } = props;
-  console.log(openModal, dataView);
   return (
     <Modal
       title={dataView.title}

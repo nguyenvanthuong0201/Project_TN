@@ -72,7 +72,6 @@ function HomePaymentCart(props) {
   //// Set Thanh toán
   const string = window.location.href;
   const substring = "message=Success";
-  console.log("firebaseDataCustomer 1 :>> ", firebaseDataCustomer);
   useEffect(() => {
     handleClickGetAllCustomer();
   }, []);
@@ -99,7 +98,6 @@ function HomePaymentCart(props) {
     }
 
     if (value.typePayment === "momo") {
-      console.log("value :>> ", value);
       localStorage.setItem("PAYMENT", JSON.stringify(value));
       dispatch(paymentCustody(value));
     } else {

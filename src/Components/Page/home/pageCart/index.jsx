@@ -28,7 +28,6 @@ function PageCart(props) {
   const reCard = useSelector((state) => state.reCard);
   const reLogin = useSelector((state) => state.reLogin);
   const dispatch = useDispatch();
-  console.log("reLogin1111 :>> ", reLogin);
   const handleDelete = (card, key) => {
     const index = findProductInCart(card, key);
     dispatch(deleteCarts(index));
@@ -64,8 +63,7 @@ function PageCart(props) {
 
   //   if (value > 0) {
   //     dispatch(updateCarts(index, value));
-  //     console.log("index", index);
-  //     console.log("value", value);
+
   //   } else {
   //     alert("Bạn định hack à ");
   //   }
@@ -125,7 +123,6 @@ function PageCart(props) {
     return number;
   };
   const updateQuantity = (card, key, size, e) => {
-    console.log("size", size);
     const index = findProductInCartSize(card, size, key);
     dispatch(updateCarts(index, e));
   };

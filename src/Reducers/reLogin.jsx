@@ -4,7 +4,6 @@ var initialState = data ? data : [];
 function reLogin(state = initialState, action) {
   switch (action.type) {
     case LOGIN_USER:
-      console.log("action", action);
       state = action.user;
       localStorage.setItem("LOGIN", JSON.stringify(state));
       return state;

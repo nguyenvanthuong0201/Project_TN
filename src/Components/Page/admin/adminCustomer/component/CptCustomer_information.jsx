@@ -94,7 +94,6 @@ const CptCustomer_information = (props) => {
       </>
     );
   };
-  console.log("dataView :>> ", dataView);
   const showBill = (data) => {
     let number = 0;
     if (data.length > 0) {

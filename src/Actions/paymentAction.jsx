@@ -9,7 +9,6 @@ const paymentCustody = (product) => async (dispatch) => {
   var requestId = Date.now();
   var subtotalCartProduct = product.paymentSubTotal;
 
-  console.log("subtotalCartProduct :>> ", typeof subtotalCartProduct);
   //// sửa địa chỉ thanh toán
   var returnUrlOrder = "http://localhost:3000/result";
 
@@ -117,7 +116,6 @@ const paymentCustody = (product) => async (dispatch) => {
         });
       window.location.href = dataResponseMoMo.data.payUrl;
     }
-    console.log("Thành công");
   } else {
     notification.success({
       message: "Thất bại !!!!!",

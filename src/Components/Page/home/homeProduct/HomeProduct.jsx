@@ -67,7 +67,6 @@ function HomeProduct(props) {
   };
 
   let dataProduct = dataFireBase.filter(ArrayProduct);
-  console.log("dataProduct :>> ", dataProduct);
   return (
     <motion.div
       initial="out"

@@ -34,7 +34,6 @@ function InformationModal(props) {
       ...dataView,
       buyCart: value,
     };
-    console.log("body :>> ", body);
     setDataAddOnCart(body);
     if (toPay === false) {
       dispatch(listCarts(body));
@@ -58,7 +57,6 @@ function InformationModal(props) {
     setToPay(true);
   };
 
-  console.log(dataView, "dataView");
   return (
     <Modal
       visible={openModal}
@@ -86,7 +84,6 @@ function InformationModal(props) {
         </Col>
         <Col xs={24} md={24} lg={16} xl={16}>
           <h2>{dataView.title}</h2>
-          {console.log("dataView.sale", typeof dataView.sale)}
           <h3>
             {dataView.option === "Promotion"
               ? Number(dataView.sale).toLocaleString()

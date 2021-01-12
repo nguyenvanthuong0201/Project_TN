@@ -162,7 +162,6 @@ function AdminCustomer(props) {
           position,
           photoURL,
         });
-        console.log("dataCustomer", data);
       });
       setDataFireBase(data);
     });

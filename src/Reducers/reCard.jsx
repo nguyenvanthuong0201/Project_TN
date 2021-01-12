@@ -17,25 +17,21 @@ function reCard(state = initialState, action) {
       if (index !== -1) {
         if (state[index].buyCart.size === product.buyCart.size) {
           state[index].buyCart.amount += Number(product.buyCart.amount);
-          console.log("CART_LIST_ADD IF");
 
           localStorage.setItem("CART", JSON.stringify(state));
         }
       } else {
-        console.log("CART_LIST_ADD ELSE");
         state.push(product);
         localStorage.setItem("CART", JSON.stringify(state));
       }
       return [...state];
     // Delete sản phẩm khỏi giỏ hàng
     case CART_LIST_DELETE:
-      console.log("action :>> ", action);
       state.splice(action.keyProduct, 1);
       localStorage.setItem("CART", JSON.stringify(state));
       return [...state];
     // Update khi mua sản phẩm
     case CART_LIST_UPDATE:
-      console.log(key, quantity);
       if (state[key].buyCart.amount < quantity) {
         state[key].buyCart.amount += 1;
       } else {

@@ -10,16 +10,19 @@ import {
   Tag,
 } from "antd";
 import { Table } from "antd";
-import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import { DeleteOutlined, ExportOutlined, EyeOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import { pageAnimate, pageTransitionX } from "../../../../data/transition";
 import firebase from "../../../../utils/firebase";
 import { format } from "../../../../data/dataAdminProduct";
 import ModalPayment from "./component/ModalPayment";
+import AdminPaymentExport from "./component/AdminPaymentExport";
+
 const moment = require("moment");
 function AdminPayment(props) {
   const [filterTable, setFilterTable] = useState(null);
-  const [dataFireBase, setDataFireBase] = useState([]);
+  const [valueFilter, setValueFilter] = useState(null)
+  const [dataFireBase, setDataFireBase] = useState(null);
   const [dataView, setDataView] = useState("");
   const [openModal, setOpenModal] = useState(false);
 
@@ -143,7 +146,7 @@ function AdminPayment(props) {
           </Tag>
         </>
       ),
-      onFilter: (value, record) => record.status.indexOf(value) === 0,
+      onFilter: (value, record) => record.status.indexOf(value) === 0 ,
     },
     {
       title: "Create Date",
@@ -157,7 +160,6 @@ function AdminPayment(props) {
   useEffect(() => {
     handleClickGetAll();
   }, []);
-  console.log("dataFireBase :>> ", dataFireBase);
   const handleClickGetAll = () => {
     let tutorialsRef = firebase.firestore().collection("/payment");
     tutorialsRef.onSnapshot((querySnapshot) => {
@@ -245,7 +247,14 @@ function AdminPayment(props) {
       )
     );
     setFilterTable(filterTable);
+    setValueFilter(null)
   };
+  /// Filter table Ant Design
+  const handleTableChange = (pagination, filters, sorter)=>{
+    const dataFilterTable = dataFireBase.filter(x => filters.status?filters.status.includes(x.status)===true:false);
+    setValueFilter(dataFilterTable);
+    setFilterTable(null);
+  }
 
   return (
     <motion.div
@@ -261,16 +270,26 @@ function AdminPayment(props) {
         setOpenModal={setOpenModal}
       />
       <Card style={{ borderRadius: "10px" }} size="small">
-        <Row>
-          <Col xs={24} md={24} lg={10}>
+        <Row style={{ display: "flex", justifyContent: "space-between" }}>
+          <div>
+          <Col>
             <Input.Search
               placeholder="Search by..."
               enterButton
               onSearch={handleSearchTable}
               allowClear={true}
               style={{ backgroundColor: "#FDA30E" }}
-            />
+              />
           </Col>
+              </div>
+
+              <div>
+              <div>
+            <Col>
+            <AdminPaymentExport filterTable={filterTable} dataFireBase={dataFireBase} valueFilter= {valueFilter} />
+            </Col>
+          </div>
+              </div>
         </Row>
         <Row>
           <Col xs={24} md={24} lg={24}>
@@ -278,6 +297,7 @@ function AdminPayment(props) {
               columns={columns}
               dataSource={filterTable == null ? dataFireBase : filterTable}
               pagination={{ pageSize: 10 }}
+              onChange={handleTableChange}
               size="small"
               rowKey="createDate"
             />

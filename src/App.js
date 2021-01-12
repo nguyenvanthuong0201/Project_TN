@@ -129,7 +129,6 @@ function App() {
       photoURL: userLogin.photoURL,
     }
   );
-  console.log("dataCustomer", dataCustomer);
 
   if (dataEmployee !== undefined) {
     dispatch(loginUser(targeEmployee));

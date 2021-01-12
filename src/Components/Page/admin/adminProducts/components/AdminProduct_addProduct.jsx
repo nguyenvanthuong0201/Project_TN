@@ -34,14 +34,12 @@ function AddProduct(props) {
       ...value,
       key: "",
     };
-    console.log("body", body);
     const id = "Product_" + Date.now();
     const storageRef = firebase.storage().ref("images-product").child(id);
     const tutorialsRef = firebase.firestore().collection("/product");
     if (body.key === "") {
       await storageRef.put(body.picture[0].originFileObj);
       storageRef.getDownloadURL().then((url) => {
-        console.log("url", url);
         tutorialsRef
           .add({
             createDate: Date.now(),
@@ -76,7 +74,6 @@ function AddProduct(props) {
   };
 
   const normFile = (e) => {
-    console.log("Upload event:", e);
     if (Array.isArray(e)) {
       return e;
     }

@@ -1,3 +1,9 @@
 .Login_title{
     text-align: center;
 }
+.page-head.width {
+    min-height: 600px;
+}
+.ant-col.ant-form-item-control {
+    text-align: center;
+}

@@ -8,23 +8,17 @@ function ResultPaymentCart(props) {
   const data = JSON.parse(localStorage.getItem("PAYMENT"));
   const history = useHistory();
   const [url, setUrl] = useState("");
-  console.log("data :>> ", data);
   let location = useLocation();
   const urlResult = location.search;
-  console.log("urlResult :>> ", urlResult);
   const viTri = urlResult.indexOf("message=");
-  console.log("urlResult.substr:>> ", urlResult.substr(viTri, 11));
   const URL_RESULT = urlResult.substr(viTri, 11);
   useEffect(() => {
     if (URL_RESULT === "message=Err" || URL_RESULT === "message=Ord") {
-      console.log("Erro:>> ");
       setUrl("Order failed");
     } else {
-      console.log("Success:>> ");
       setUrl("Order success");
     }
   }, []);
-  console.log("url :>> ", url);
   const showProduct = (cart) => {
     let result = null;
     if (cart.length > 0) {

@@ -191,7 +191,6 @@ function AdminUser(props) {
     }
   };
   const onCancelOrder = (key) => {
-    console.log("key :>> ", key);
     const updateRef = firebase.firestore().collection("payment").doc(key);
     updateRef
       .update({
@@ -229,7 +228,16 @@ function AdminUser(props) {
   let dataPaymentShipping = dataPaymentUser.filter(ArrayShipping);
   let dataPaymentSuccess = dataPaymentUser.filter(ArraySuccess);
   let dataPaymentCancel = dataPaymentUser.filter(ArrayCancel);
-  console.log("dataPaymentOrders :>> ", dataPaymentOrders);
+
+  const showNumberCart = (data) => {
+    let number = 0;
+    if (data.length > 0) {
+      for (let i = 0; i < data.length; i++) {
+        number += 1;
+      }
+    }
+    return number;
+  };
   const showAllPayment = (dataPaymentUser) => {
     let result = null;
     if (dataPaymentUser.length > 0) {
@@ -570,22 +578,72 @@ function AdminUser(props) {
             <Row>
               <Col xs={24} md={24} lg={24} xl={24}>
                 <Tabs type="card" className="widthSize">
-                  <TabPane tab="All" key="1">
+                  <TabPane
+                    tab={
+                      "All" + "-" + "(" + showNumberCart(dataPaymentUser) + ")"
+                    }
+                    key="1"
+                  >
                     {showAllPayment(dataPaymentUser)}
                   </TabPane>
-                  <TabPane tab="Orders" key="2">
+                  <TabPane
+                    tab={
+                      "Orders" +
+                      "-" +
+                      "(" +
+                      showNumberCart(dataPaymentOrders) +
+                      ")"
+                    }
+                    key="2"
+                  >
                     {showPaymentOrders(dataPaymentOrders)}
                   </TabPane>
-                  <TabPane tab="Confirmed" key="3">
+                  <TabPane
+                    tab={
+                      "Confirmed" +
+                      "-" +
+                      "(" +
+                      showNumberCart(dataPaymentConfirmed) +
+                      ")"
+                    }
+                    key="3"
+                  >
                     {showPaymentConfirmed(dataPaymentConfirmed)}
                   </TabPane>
-                  <TabPane tab="Shipping" key="4">
+                  <TabPane
+                    tab={
+                      "Shipping" +
+                      "-" +
+                      "(" +
+                      showNumberCart(dataPaymentShipping) +
+                      ")"
+                    }
+                    key="4"
+                  >
                     {showPaymentShipping(dataPaymentShipping)}
                   </TabPane>
-                  <TabPane tab="Delivered successfully" key="5">
+                  <TabPane
+                    tab={
+                      "Success" +
+                      "-" +
+                      "(" +
+                      showNumberCart(dataPaymentSuccess) +
+                      ")"
+                    }
+                    key="5"
+                  >
                     {showPaymentSuccess(dataPaymentSuccess)}
                   </TabPane>
-                  <TabPane tab="Cancel order" key="6">
+                  <TabPane
+                    tab={
+                      "Cancel" +
+                      "-" +
+                      "(" +
+                      showNumberCart(dataPaymentCancel) +
+                      ")"
+                    }
+                    key="6"
+                  >
                     {showPaymentCancel(dataPaymentCancel)}
                   </TabPane>
                 </Tabs>

@@ -19,7 +19,6 @@ const { SubMenu } = Menu;
 function CptSiderbar(props) {
   const { collapsed } = props;
   const userLogin = useSelector((state) => state.reLogin);
-  console.log("userLogin :>> ", userLogin);
   const showSidebar = () => {
     if (userLogin) {
       if (userLogin.position === "admin") {

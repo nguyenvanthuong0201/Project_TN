@@ -21,7 +21,6 @@ function HomeSlideProduct(props) {
   const handleCancel = () => {
     setOpenModal(false);
   };
-  console.log("dataProductNew :>> ", dataProductNew);
   return (
     <div className="new_arrivals">
       <InformationModal

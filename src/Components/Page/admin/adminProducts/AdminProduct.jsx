@@ -252,7 +252,6 @@ function AdminProduct(props) {
       .doc(id)
       .delete()
       .then(() => {
-        console.log("Document successfully deleted!");
         notification.success({
           message: "Delete success !!!!!",
           placement: "bottomLeft",
@@ -301,7 +300,6 @@ function AdminProduct(props) {
           sale,
           createDate,
         });
-        console.log(data, "data");
       });
       setDataFireBase(data);
     });

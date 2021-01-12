@@ -11,11 +11,13 @@ import {
   Row,
   Form,
   Radio,
+  notification,
 } from "antd";
 import { useSelector } from "react-redux";
 import AvatarProfile from "./component/Avatar";
 import { motion } from "framer-motion";
 import { pageAnimate, pageTransitionX } from "../../../../data/transition";
+import firebase from "../../../../utils/firebase";
 
 AdminProfile.propTypes = {};
 
@@ -24,7 +26,65 @@ function AdminProfile(props) {
   const [update, setUpdate] = useState(true);
   const onFinish = (value) => {
     setUpdate(true);
+    console.log("value :>> ", value);
+
+    const updateRef1 = firebase
+      .firestore()
+      .collection("customer")
+      .doc(userLogin.key);
+    updateRef1
+      .set({
+        address: value.address,
+        displayName: value.displayName,
+        email: value.email,
+        firstName: value.firstName,
+        gender: value.gender,
+        lastName: value.lastName,
+        phone: value.phone,
+        picture: "",
+        position: userLogin.position,
+        displayName: userLogin.displayName,
+        photoURL: userLogin.photoURL,
+      })
+      .then((docRef) => {
+        notification.success({
+          message: "Update success !!!!!",
+          placement: "bottomLeft",
+          style: { backgroundColor: "greenyellow" },
+        });
+      })
+      .catch((error) => {
+        const updateRef = firebase
+          .firestore()
+          .collection("employee")
+          .doc(userLogin.key);
+        updateRef
+          .set({
+            address: value.address,
+            displayName: value.displayName,
+            email: value.email,
+            firstName: value.firstName,
+            gender: value.gender,
+            lastName: value.lastName,
+            phone: value.phone,
+            picture: "",
+            position: userLogin.position,
+            displayName: userLogin.displayName,
+            photoURL: userLogin.photoURL,
+          })
+          .then((docRef) => {
+            notification.success({
+              message: "Update success !!!!!",
+              placement: "bottomLeft",
+              style: { backgroundColor: "greenyellow" },
+            });
+          })
+          .catch((error) => {
+            console.error("Error adding document: ", error);
+          });
+      });
   };
+
   const onFinishFailed = (value) => {};
 
   return (
@@ -127,7 +187,7 @@ function AdminProfile(props) {
                     { required: true, message: "Please input your title!" },
                   ]}
                 >
-                  <Input type="text" disabled={update} />
+                  <Input type="text" disabled={true} />
                 </Form.Item>
                 <Form.Item
                   hasFeedback
@@ -143,9 +203,9 @@ function AdminProfile(props) {
                 <Divider />
                 <Form.Item shouldUpdate={true}>
                   <Button type="primary" htmlType="submit" disabled={update}>
-                    Add
+                    Update
                   </Button>
-                  <Button onClick={() => setUpdate(false)}>Update</Button>
+                  <Button onClick={() => setUpdate(false)}>Edit</Button>
                 </Form.Item>
               </Col>
               <Col xs={24} md={24} lg={8} xl={8}>
